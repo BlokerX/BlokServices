@@ -1,0 +1,116 @@
+{
+    "app": {
+        "name": "Blok Services",
+        "version": "1.0.0",
+        "description": "Blok Services to aplikacja internetowa, która pozwala na korzystanie z wielu usług w jednym miejscu.",
+        "author": "&copy; 2025 BlokerCompany™ / Jakub Michalik . All rights reserved.",
+        "license": "MIT"
+    },
+    "pages": {
+        "logo": "../images/app/logo.png",
+        "login-page": {
+            "path": "../login.html",
+            "title": "Strona logowania",
+            "styles": {},
+            "scripts": {}
+        },
+        "register-page": {
+            "path": "../register.html",
+            "title": "Strona rejestracji",
+            "styles": {},
+            "scripts": {}
+        },
+        "welcome-page": {
+            "path": "../welcome-page/index.php",
+            "title": "Strona powitalna",
+            "styles": {
+                "main": "styles/main.css",
+                "themes": "styles/themes.css"
+            },
+            "scripts": {
+                "main": "scripts/main.js",
+                "theme": "scripts/theme.js"
+            }
+        },
+        "main-page": {
+            "path": "../main.html",
+            "title": "Strona główna",
+            "styles": {},
+            "scripts": {}
+        },
+        "drive-page": {
+            "path": "../drive-page/index.php",
+            "title": "Strona dysku",
+            "styles": {},
+            "scripts": {}
+        },
+        "social-page": {
+            "path": "../social-page/index.php",
+            "title": "Strona społecznościowa",
+            "styles": {},
+            "scripts": {}
+        },
+        "newsletters-page": {
+            "path": "../newsletters-page/index.php",
+            "title": "Strona wiadomości",
+            "styles": {},
+            "scripts": {}
+        },
+        "gallery-page": {
+            "path": "../gallery-page/index.php",
+            "title": "Strona galerii",
+            "styles": {},
+            "scripts": {}
+        },
+        "applications-page": {
+            "path": "../applications-page/index.php",
+            "title": "Strona aplikacji",
+            "styles": {},
+            "scripts": {}
+        },
+        "games-page": {
+            "path": "../games-page/index.php",
+            "title": "Strona gier",
+            "styles": {},
+            "scripts": {}
+        },
+        "media-page": {
+            "path": "../media-page/index.php",
+            "title": "Strona mediów",
+            "styles": {},
+            "scripts": {}
+        },
+        "profile-page": {
+            "path": "../profile.html",
+            "title": "Strona profilu",
+            "styles": {},
+            "scripts": {}
+        },
+        "chat-page": {
+            "path": "../chat.html",
+            "title": "Strona czatu",
+            "styles": {},
+            "scripts": {}
+        },
+        "settings-page": {
+            "path": "../settings-page/index.php",
+            "title": "Strona ustawień",
+            "styles": {},
+            "scripts": {}
+        }
+    },
+    "documents": {
+        "privacy-policy": "../../documents/privacy-policy.txt",
+        "terms-of-service": "../../documents/terms-of-service.txt",
+        "contact": "../../documents/contact.php"
+    },
+    "database": {
+        "host": "localhost",
+        "user": "",
+        "password": "",
+        "name": ""
+    },
+    "api": {
+        "url": "http://localhost/proj_ai/api/"
+    }
+}
