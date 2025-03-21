@@ -1,1 +1,31 @@
-privacy-policy
+POLITYKA PRYWATNOŚCI
+
+1. Informacje ogólne
+Niniejsza Polityka Prywatności określa zasady przetwarzania i ochrony danych osobowych użytkowników.
+
+2. Administrator danych
+Administratorem Państwa danych osobowych jest [Nazwa firmy/organizacji] z siedzibą w [adres].
+
+3. Cele przetwarzania danych
+Państwa dane osobowe są przetwarzane w celu:
+- realizacji usług
+- komunikacji z użytkownikami
+- wypełnienia obowiązków prawnych
+- celów marketingowych (za zgodą)
+
+4. Prawa użytkowników
+Mają Państwo prawo do:
+- dostępu do swoich danych
+- ich sprostowania
+- usunięcia
+- ograniczenia przetwarzania
+- przenoszenia danych
+- wniesienia sprzeciwu
+
+5. Bezpieczeństwo danych
+Stosujemy odpowiednie środki techniczne i organizacyjne, aby chronić Państwa dane osobowe.
+
+6. Kontakt
+W sprawach dotyczących ochrony danych osobowych mogą się Państwo kontaktować pod adresem: [adres e-mail].
+
+Data aktualizacji: [data]

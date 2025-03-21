@@ -1,1 +1,26 @@
-terms-of-service
+REGULAMIN SERWISU INTERNETOWEGO
+
+§1. POSTANOWIENIA OGÓLNE
+1. Niniejszy regulamin określa zasady korzystania z serwisu internetowego.
+2. Właścicielem serwisu jest [Nazwa firmy] z siedzibą w [Miasto], ul. [Adres].
+3. Kontakt z administratorem serwisu: email: [adres@email.pl], tel: [numer telefonu].
+
+§2. DEFINICJE
+1. Serwis - strona internetowa dostępna pod adresem [www.domena.pl]
+2. Użytkownik - osoba fizyczna korzystająca z serwisu
+3. Administrator - właściciel i zarządca serwisu
+
+§3. ZASADY KORZYSTANIA Z SERWISU
+1. Korzystanie z serwisu jest dobrowolne i bezpłatne.
+2. Użytkownik zobowiązuje się do korzystania z serwisu zgodnie z prawem i dobrymi obyczajami.
+3. Zakazane jest dostarczanie treści o charakterze bezprawnym.
+
+§4. OCHRONA DANYCH OSOBOWYCH
+1. Administrator jest jednocześnie Administratorem Danych Osobowych.
+2. Dane osobowe przetwarzane są zgodnie z RODO.
+3. Szczegółowe informacje znajdują się w Polityce Prywatności.
+
+§5. POSTANOWIENIA KOŃCOWE
+1. Administrator zastrzega sobie prawo do zmiany regulaminu.
+2. O wszelkich zmianach użytkownicy będą informowani poprzez serwis.
+3. Regulamin wchodzi w życie z dniem [data].

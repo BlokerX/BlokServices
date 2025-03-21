@@ -3,100 +3,78 @@
         "name": "Blok Services",
         "version": "1.0.0",
         "description": "Blok Services to aplikacja internetowa, która pozwala na korzystanie z wielu usług w jednym miejscu.",
-        "author": "&copy; 2025 BlokerCompany™ / Jakub Michalik . All rights reserved.",
+        "author": "BlokerCompany™ / Jakub Michalik",
         "license": "MIT"
     },
+    "styles": {
+        "main": "../../styles/main.css",
+        "themes": "../../styles/themes.css"
+    },
+    "scripts": {
+        "main": "../../scripts/main.js",
+        "theme": "../../scripts/theme.js"
+    },
+    "images": {
+        "logo": "../../images/app/logo.png",
+        "background": "../../images/app/background.jpg",
+        "icons": "../../images/app/icons/"
+    },
     "pages": {
-        "logo": "../images/app/logo.png",
         "login-page": {
             "path": "../login.html",
-            "title": "Strona logowania",
-            "styles": {},
-            "scripts": {}
+            "title": "Strona logowania"
         },
         "register-page": {
             "path": "../register.html",
-            "title": "Strona rejestracji",
-            "styles": {},
-            "scripts": {}
+            "title": "Strona rejestracji"
         },
         "welcome-page": {
             "path": "../welcome-page/index.php",
-            "title": "Strona powitalna",
-            "styles": {
-                "main": "styles/main.css",
-                "themes": "styles/themes.css"
-            },
-            "scripts": {
-                "main": "scripts/main.js",
-                "theme": "scripts/theme.js"
-            }
+            "title": "Strona powitalna"
         },
         "main-page": {
             "path": "../main.html",
-            "title": "Strona główna",
-            "styles": {},
-            "scripts": {}
+            "title": "Strona główna"
         },
         "drive-page": {
             "path": "../drive-page/index.php",
-            "title": "Strona dysku",
-            "styles": {},
-            "scripts": {}
+            "title": "Strona dysku"
         },
         "social-page": {
             "path": "../social-page/index.php",
-            "title": "Strona społecznościowa",
-            "styles": {},
-            "scripts": {}
+            "title": "Strona społecznościowa"
         },
         "newsletters-page": {
             "path": "../newsletters-page/index.php",
-            "title": "Strona wiadomości",
-            "styles": {},
-            "scripts": {}
+            "title": "Strona wiadomości"
         },
         "gallery-page": {
             "path": "../gallery-page/index.php",
-            "title": "Strona galerii",
-            "styles": {},
-            "scripts": {}
+            "title": "Strona galerii"
         },
         "applications-page": {
             "path": "../applications-page/index.php",
-            "title": "Strona aplikacji",
-            "styles": {},
-            "scripts": {}
+            "title": "Strona aplikacji"
         },
         "games-page": {
             "path": "../games-page/index.php",
-            "title": "Strona gier",
-            "styles": {},
-            "scripts": {}
+            "title": "Strona gier"
         },
         "media-page": {
             "path": "../media-page/index.php",
-            "title": "Strona mediów",
-            "styles": {},
-            "scripts": {}
+            "title": "Strona mediów"
         },
         "profile-page": {
             "path": "../profile.html",
-            "title": "Strona profilu",
-            "styles": {},
-            "scripts": {}
+            "title": "Strona profilu"
         },
         "chat-page": {
             "path": "../chat.html",
-            "title": "Strona czatu",
-            "styles": {},
-            "scripts": {}
+            "title": "Strona czatu"
         },
         "settings-page": {
             "path": "../settings-page/index.php",
-            "title": "Strona ustawień",
-            "styles": {},
-            "scripts": {}
+            "title": "Strona ustawień"
         }
     },
     "documents": {
