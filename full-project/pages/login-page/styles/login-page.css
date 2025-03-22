@@ -115,15 +115,6 @@
     box-shadow: 0 0 0 3px rgba(74, 107, 255, 0.1);
 }
 
-.toggle-password {
-    position: absolute;
-    right: 15px;
-    background: none;
-    border: none;
-    color: #666;
-    cursor: pointer;
-}
-
 .form-options {
     display: flex;
     justify-content: space-between;

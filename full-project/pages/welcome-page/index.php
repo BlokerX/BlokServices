@@ -1,4 +1,7 @@
 <?php
+// Dane bieżącej podstrony
+$actualPage = 'welcome-page';
+
 // Wczytywanie z danych z pliku config.json
 $jsonData = file_get_contents('../../config.json');
 $config = json_decode($jsonData, true);
@@ -18,13 +21,13 @@ if (json_last_error() !== JSON_ERROR_NONE) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title><?php echo $config['pages']['welcome-page']['title']; ?></title>
+    <title><?php echo $config['pages'][$actualPage]['title']; ?></title>
 
     <meta name="description" content="<?php echo $config['app']['description']; ?>">
     <meta name="author" content="<?php echo $config['app']['author']; ?>">
     <meta name="application-name" content="<?php echo $config['app']['name']; ?>">
 
-    <link rel="icon" href="images/favicon.png" type="image/png">
+    <link rel="icon" href="<?php echo $config['images']['favicon'] ?>" type="image/png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,6 +36,7 @@ if (json_last_error() !== JSON_ERROR_NONE) {
 
     <link rel="stylesheet" href="<?php echo $config['styles']['main']; ?>">
     <link rel="stylesheet" href="<?php echo $config['styles']['themes']; ?>">
+    <link rel="stylesheet" href="styles/welcome-page.css">
 
 </head>
 
@@ -87,7 +91,7 @@ if (json_last_error() !== JSON_ERROR_NONE) {
             ];
 
             foreach ($navItems as $page => $label) {
-                $isActive = ($page === 'welcome-page') ? ' class="active"' : '';
+                $isActive = ($page === $actualPage) ? ' class="active"' : '';
                 echo '<li><a href="' . $config['pages'][$page]['path'] . '"' . $isActive . '>' . $label . '</a></li>';
             }
             ?>

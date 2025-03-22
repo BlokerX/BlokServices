@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dysk - Przechowywanie plików</title>
-    <link rel="stylesheet" href="styles-css.css">
+    <link rel="stylesheet" href="styles/styles-css.css">
 </head>
 <body>
     <div class="container">

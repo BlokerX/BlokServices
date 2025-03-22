@@ -3,7 +3,7 @@
 // TODO 2.Pamiętaj o zmianie stylu i skryptów dla tej podstrony
 
 // Dane bieżącej podstrony
-$actualPage = '_drive-page';
+$actualPage = '_template-page';
 
 // Wczytywanie z danych z pliku config.json
 $jsonData = file_get_contents('../../config.json');
@@ -39,7 +39,7 @@ if (json_last_error() !== JSON_ERROR_NONE) {
 
     <link rel="stylesheet" href="<?php echo $config['styles']['main']; ?>">
     <link rel="stylesheet" href="<?php echo $config['styles']['themes']; ?>">
-    <link rel="stylesheet" href="styles/_drive-page.css">
+    <!-- <link rel="stylesheet" href="styles/_template-page.css"> -->
 
 </head>
 
@@ -103,88 +103,54 @@ if (json_last_error() !== JSON_ERROR_NONE) {
 
     <!-- #region Zawartość podstrony -->
 
-    <!-- Lewa Strona - Menu -->
     <aside class="left-sidebar">
         <div class="sidebar-header">
-            <h3>Foldery</h3>
+            <h3>Menu poboczne</h3>
         </div>
         <div class="sidebar-content">
             <ul class="sidebar-menu">
-                <li><a href="#"><i class="fas fa-folder"></i> Moje pliki</a></li>
-                <li><a href="#"><i class="fas fa-folder-open"></i> Udostępnione</a></li>
-                <li><a href="#"><i class="fas fa-trash"></i> Kosz</a></li>
+                <li><a href="#"><i class="fas fa-home"></i> Pulpit</a></li>
+                <li><a href="<?php echo $config['pages']['profile-page']['path']; ?>"><i class="fas fa-user"></i> Profil</a></li>
+                <li><a href="#"><i class="fas fa-bell"></i> Powiadomienia</a></li>
                 <hr>
-                <li><a href="#"><i class="fas fa-cogs"></i> Ustawienia dysku</a></li>
+                <li><a href="#"><i class="fas fa-cog"></i> Preferencje</a></li>
             </ul>
         </div>
     </aside>
 
-    <!-- Główna Sekcja -->
     <main>
-        <section class="drive-section">
-            <h2>Moje Pliki</h2>
-
-            <!-- Panel narzędzi do tworzenia nowych plików -->
-            <div class="tools-panel">
-                <button class="cta-primary"><i class="fas fa-plus"></i> Nowy folder</button>
-                <button class="cta-secondary"><i class="fas fa-upload"></i> Wgraj pliki</button>
-            </div>
-
-            <!-- Siatka plików -->
-            <div class="files-grid">
-                <div class="file-card">
-                    <i class="fas fa-folder"></i>
-                    <h3>Folder Dokumenty</h3>
-                    <p>3 pliki</p>
-                </div>
-                <div class="file-card">
-                    <i class="fas fa-file-pdf"></i>
-                    <h3>Raport.pdf</h3>
-                    <p>2MB</p>
-                </div>
-                <div class="file-card">
-                    <i class="fas fa-file-excel"></i>
-                    <h3>Budżet.xlsx</h3>
-                    <p>1.5MB</p>
-                </div>
-                <div class="file-card">
-                    <i class="fas fa-image"></i>
-                    <h3>Obrazek.jpg</h3>
-                    <p>500KB</p>
-                </div>
-                <div class="file-card">
-                    <i class="fas fa-file-video"></i>
-                    <h3>Wideo.mp4</h3>
-                    <p>30MB</p>
-                </div>
-                <div class="file-card">
-                    <i class="fas fa-file-word"></i>
-                    <h3>Oferta.docx</h3>
-                    <p>600KB</p>
-                </div>
-            </div>
-        </section>
+        <p>Treść podstrony</p>
     </main>
 
-    <!-- Prawa Strona - Popularne -->
     <aside class="right-sidebar">
+
         <div class="sidebar-header">
             <h3>Twoje skróty</h3>
         </div>
+
         <div class="sidebar-content">
             <div class="trending-posts">
+
                 <div class="trending-post">
-                    <h4>Współdzielone pliki</h4>
-                    <p>Sprawdź pliki udostępnione przez innych.</p>
+                    <h4>Nowy album muzyczny</h4>
+                    <p>Sprawdź najnowsze utwory</p>
                 </div>
+
                 <div class="trending-post">
-                    <h4>Wiadomości</h4>
-                    <p>Nowe wiadomości od znajomych.</p>
+                    <h4>Aktualizacja platformy</h4>
+                    <p>Zobacz co nowego</p>
                 </div>
+
+                <div class="trending-post">
+                    <h4>Wydarzenia w tym tygodniu</h4>
+                    <p>Zaplanuj swój czas</p>
+                </div>
+
             </div>
-            <button class="cta-secondary" onclick="window.location.href = 'index_old.php';">Odnośnik do strony wzorowej</button>
         </div>
+
     </aside>
+
 
     <!-- #endregion -->
 
@@ -203,7 +169,7 @@ if (json_last_error() !== JSON_ERROR_NONE) {
 
     <!-- Wczytywanie skryptów JS -->
     <script src="<?php echo $config['scripts']['main']; ?>"></script>
-    <script src="scripts/drive-page.js"></script>
+    <!-- <script src="scripts/_template-page.js"></script> -->
     <script src="<?php echo $config['scripts']['theme']; ?>"></script>
 
 </body>

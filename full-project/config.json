@@ -15,7 +15,8 @@
         "theme": "../../scripts/theme.js"
     },
     "images": {
-        "logo": "../../images/app/logo.png",
+        "favicon": "../../images/app/blok-services-dark.png",
+        "logo": "../../images/app/blok-services-light.png",
         "background": "../../images/app/background.jpg",
         "icons": "../../images/app/icons/"
     },
@@ -75,6 +76,10 @@
         "settings-page": {
             "path": "../settings-page/index.php",
             "title": "Strona ustawień"
+        },
+        "reset-password-page": {
+            "path": "../reset-password-page/index.php",
+            "title": "Strona resetowania hasła"
         }
     },
     "documents": {

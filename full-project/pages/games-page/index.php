@@ -54,6 +54,8 @@
 <body>
     <div class="container">
         <h1>Popularne Gry Przeglądarkowe</h1>
+        <p>Stworzyć własną bibliotekę gier tutaj</p>
+        Przykładowe gry:
         <div class="game-list">
             <div class="game-item">
                 <img src="images/agario.jpg" alt="Agar.io">

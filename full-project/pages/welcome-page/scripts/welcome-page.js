@@ -100,18 +100,19 @@ function showFeatureDetails() {
  * Inicjalizacja nawigacji
  */
 function initializeNavigation() {
-    // Aktywacja bieżącej pozycji nawigacji
-    const currentPage = window.location.pathname.split('/').pop();
-    const navLinks = document.querySelectorAll('.main-nav li a');
+    // // Aktywacja bieżącej pozycji nawigacji
+    // const currentPage = window.location.pathname.split('/').pop();
+    // const navLinks = document.querySelectorAll('.main-nav li a');
     
-    navLinks.forEach(link => {
-        const href = link.getAttribute('href').split('/').pop();
-        if (href === currentPage || (currentPage === '' && href === 'index.php')) {
-            link.classList.add('active');
-        } else {
-            link.classList.remove('active');
-        }
-    });
+    // Sprawdzenie, czy strona główna
+    // navLinks.forEach(link => {
+    //     const href = link.getAttribute('href').split('/').pop();
+    //     if (href === currentPage || (currentPage === '' && href === 'index.php')) {
+    //         link.classList.add('active');
+    //     } else {
+    //         link.classList.remove('active');
+    //     }
+    // });
     
     // Obsługa zdarzeń trendy w prawym sidebarze
     const trendingPosts = document.querySelectorAll('.trending-post');
