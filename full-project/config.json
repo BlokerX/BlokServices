@@ -20,6 +20,7 @@
         "background": "../../images/app/background.jpg",
         "icons": "../../images/app/icons/"
     },
+    "page-container-path": "../../page-container/page-container.php",
     "pages": {
         "login-page": {
             "path": "../login.html",
@@ -32,6 +33,10 @@
         "welcome-page": {
             "path": "../welcome-page/index.php",
             "title": "Strona powitalna"
+        },
+        "_template-page": {
+            "path": "../template-page/index.php",
+            "title": "Strona testowa"
         },
         "main-page": {
             "path": "../main.html",
