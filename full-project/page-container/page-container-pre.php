@@ -21,6 +21,7 @@
 
     <!-- Wczytywanie styli CSS -->
     <link rel="stylesheet" href="<?php echo $config['styles']['main']; ?>">
+    <link rel="stylesheet" href="<?php echo '../../controls/popup-window/popup-window.css'; ?>">
     <link rel="stylesheet" href="<?php echo $config['styles']['themes']; ?>">
     <link rel="stylesheet" href="<?php echo 'styles/' . $actualPage . ".css"; ?>">
 

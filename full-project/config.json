@@ -85,12 +85,19 @@
         "reset-password-page": {
             "path": "../reset-password-page/index.php",
             "title": "Strona resetowania hasła"
+        },
+        "contact-page": {
+            "path": "../contact-page/index.php",
+            "title": "Strona wyszukiwania"
+        },
+        "search-page": {
+            "path": "../search-page/index.php",
+            "title": "Strona wyszukiwania"
         }
     },
     "documents": {
         "privacy-policy": "../../documents/privacy-policy.txt",
-        "terms-of-service": "../../documents/terms-of-service.txt",
-        "contact": "../../documents/contact.php"
+        "terms-of-service": "../../documents/terms-of-service.txt"
     },
     "database": {
         "host": "localhost",

@@ -18,8 +18,9 @@ function search() {
     // Symulacja wyszukiwania
     setTimeout(() => {
         showNotification(`Znaleziono wyniki dla "${searchQuery}"`, 'success');
-        // Tutaj można by przekierować do strony wyników lub wyświetlić wyniki
-    }, 1000);
+        // Przekierowanie do strony z wynikami
+        window.location.href = `../search-page/index.php?search=${searchQuery}`;
+    }, 500);
 }
 
 //#region Powiadomienia

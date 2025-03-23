@@ -95,3 +95,5 @@
 
     </aside>
     <!-- #endregion -->
+
+    <script src="../../controls/popup-window/popup-examples.js"/>
