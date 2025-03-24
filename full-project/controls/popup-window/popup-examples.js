@@ -21,8 +21,7 @@ function pokazPopupTekstowy() {
     showPopup({
         title: 'Regulamin',
         content: text,
-        type: 'text',
-        width: 400,
+        type: 'html',
         autoCloseTime: 0 // zamknie się po 3 sekundach
 
     });
@@ -36,9 +35,8 @@ function pokazPopupTekstowy() {
 function pokazPopupZObrazkiem() {
     showPopup({
         title: 'Obrazek',
-        content: 'https://example.com/obrazek.jpg', // adres URL obrazka
-        type: 'image',
-        width: 600
+        content: 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg', // adres URL obrazka
+        type: 'image'
     });
 }
 
@@ -152,7 +150,7 @@ function pokazPopupZWideo() {
     const videoHTML = `
         <div class="popup-media-container">
             <video controls>
-                <source src="https://example.com/film.mp4" type="video/mp4">
+                <source src="https://www.youtube.com/watch?v=TlBIa8z_Mts&list=RDTlBIa8z_Mts&start_radio=1&ab_channel=GenesisVEVO" type="video/mp4">
                 Twoja przeglądarka nie obsługuje odtwarzania wideo.
             </video>
         </div>
@@ -198,5 +196,5 @@ function pokazSekwencjePopupow() {
 
 // uruchom każdą funkcję na starcie
 window.addEventListener('load', () => {
-    pokazPopupTekstowy();
+    pokazSekwencjePopupow();
 });

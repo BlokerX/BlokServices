@@ -17,7 +17,7 @@ function showPopup(options = {}) {
         title: 'Informacja',
         content: '',
         type: 'text',
-        width: 500,
+        width: 'auto',
         height: 'auto',
         closeOnOutsideClick: true,
         autoCloseTime: 0,

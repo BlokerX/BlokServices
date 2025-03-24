@@ -1,26 +1,25 @@
-REGULAMIN SERWISU INTERNETOWEGO<br>
-<br>
-§1. POSTANOWIENIA OGÓLNE<br>
-1. Niniejszy regulamin określa zasady korzystania z serwisu internetowego.<br>
-2. Właścicielem serwisu jest [Nazwa firmy] z siedzibą w [Miasto], ul. [Adres].<br>
-3. Kontakt z administratorem serwisu: email: [adres@email.pl], tel: [numer telefonu].<br>
-<br>
-§2. DEFINICJE<br>
-1. Serwis - strona internetowa dostępna pod adresem [www.domena.pl]<br>
-2. Użytkownik - osoba fizyczna korzystająca z serwisu<br>
-3. Administrator - właściciel i zarządca serwisu<br>
-<br>
-§3. ZASADY KORZYSTANIA Z SERWISU<br>
-1. Korzystanie z serwisu jest dobrowolne i bezpłatne.<br>
-2. Użytkownik zobowiązuje się do korzystania z serwisu zgodnie z prawem i dobrymi obyczajami.<br>
-3. Zakazane jest dostarczanie treści o charakterze bezprawnym.<br>
-<br>
-§4. OCHRONA DANYCH OSOBOWYCH<br>
-1. Administrator jest jednocześnie Administratorem Danych Osobowych.<br>
-2. Dane osobowe przetwarzane są zgodnie z RODO.<br>
-3. Szczegółowe informacje znajdują się w Polityce Prywatności.<br>
-<br>
-§5. POSTANOWIENIA KOŃCOWE<br>
-1. Administrator zastrzega sobie prawo do zmiany regulaminu.<br>
-2. O wszelkich zmianach użytkownicy będą informowani poprzez serwis.<br>
-3. Regulamin wchodzi w życie z dniem [data].<br>
+<h2>REGULAMIN SERWISU INTERNETOWEGO</h2>
+§1. POSTANOWIENIA OGÓLNE
+1. Niniejszy regulamin określa zasady korzystania z serwisu internetowego.
+2. Właścicielem serwisu jest [Nazwa firmy] z siedzibą w [Miasto], ul. [Adres].
+3. Kontakt z administratorem serwisu: email: [adres@email.pl], tel: [numer telefonu].
+
+§2. DEFINICJE
+1. Serwis - strona internetowa dostępna pod adresem [www.domena.pl]
+2. Użytkownik - osoba fizyczna korzystająca z serwisu
+3. Administrator - właściciel i zarządca serwisu
+
+§3. ZASADY KORZYSTANIA Z SERWISU
+1. Korzystanie z serwisu jest dobrowolne i bezpłatne.
+2. Użytkownik zobowiązuje się do korzystania z serwisu zgodnie z prawem i dobrymi obyczajami.
+3. Zakazane jest dostarczanie treści o charakterze bezprawnym.
+
+§4. OCHRONA DANYCH OSOBOWYCH
+1. Administrator jest jednocześnie Administratorem Danych Osobowych.
+2. Dane osobowe przetwarzane są zgodnie z RODO.
+3. Szczegółowe informacje znajdują się w Polityce Prywatności.
+
+§5. POSTANOWIENIA KOŃCOWE
+1. Administrator zastrzega sobie prawo do zmiany regulaminu.
+2. O wszelkich zmianach użytkownicy będą informowani poprzez serwis.
+3. Regulamin wchodzi w życie z dniem [data].

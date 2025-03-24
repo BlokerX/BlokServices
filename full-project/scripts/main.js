@@ -140,6 +140,7 @@ function getNotificationColor(type) {
 document.addEventListener('DOMContentLoaded', function () {
     // Inicjalizacja przycisków i interakcji
     initializeButtons();
+    initializeLinks();
 
     // Inicjalizacja podstrony
     initializeSubpage();
@@ -164,6 +165,57 @@ function initializeButtons() {
     if (registerButton) {
         registerButton.addEventListener('click', function () {
             window.location.href = '../register-page/index.php';
+        });
+    }
+}
+
+/**
+ * Inicjalizacja linków do dokumentów 
+ */
+function initializeLinks() {
+    // Linki do dokumentów
+    const termsOfServiceLink = document.querySelector('.terms-of-service-link');
+    const privacyPolicyLink = document.querySelector('.privacy-policy-link');
+
+    if (termsOfServiceLink) {
+        termsOfServiceLink.addEventListener('click', function () {
+            fetch('../../documents/terms-of-service.txt')
+                .then(response => response.text())
+                .then(text => {
+                    console.log(text);  // Zawartość pliku
+                    // Możesz przypisać tekst do zmiennej
+                    let fileContent = text;
+
+                    showPopup({
+                        title: 'Regulamin',
+                        content: text,
+                        type: 'html',
+                        autoCloseTime: 0
+
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    }
+
+    if (privacyPolicyLink) {
+        privacyPolicyLink.addEventListener('click', function () {
+            fetch('../../documents/privacy-policy.txt')
+                .then(response => response.text())
+                .then(text => {
+                    console.log(text);  // Zawartość pliku
+                    // Możesz przypisać tekst do zmiennej
+                    let fileContent = text;
+
+                    showPopup({
+                        title: 'Polityka prywatności',
+                        content: text,
+                        type: 'html',
+                        autoCloseTime: 0
+
+                    });
+                })
+                .catch(error => console.error('Error:', error));
         });
     }
 }

@@ -5,8 +5,8 @@
                 <p>&copy; <?php echo date('Y'); ?> <?php echo $config['app']['author']; ?>. Wszelkie prawa zastrzeżone.</p>
             </div>
             <div class="footer-links">
-                <a href="<?php echo $config['documents']['terms-of-service']; ?>">Regulamin</a>
-                <a href="<?php echo $config['documents']['privacy-policy']; ?>">Polityka prywatności</a>
+                <a class="terms-of-service-link">Regulamin</a>
+                <a class="privacy-policy-link">Polityka prywatności</a>
                 <a href="<?php echo $config['pages']['contact-page']['path']; ?>">Kontakt</a>
             </div>
         </div>
