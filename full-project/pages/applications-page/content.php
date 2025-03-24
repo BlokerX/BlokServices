@@ -1,0 +1,1 @@
+Karta aplikacji
