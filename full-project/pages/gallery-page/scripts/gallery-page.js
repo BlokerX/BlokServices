@@ -10,8 +10,8 @@ const galleryData = [
     },
     {
         id: 2,
-        src: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg",
-        thumbnail: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg",
+        src: "https://images.pexels.com/photos/1054655/pexels-photo-1054655.jpeg?cs=srgb&dl=pexels-hsapir-1054655.jpg&fm=jpg",
+        thumbnail: "https://images.pexels.com/photos/1054655/pexels-photo-1054655.jpeg?cs=srgb&dl=pexels-hsapir-1054655.jpg&fm=jpg",
         title: "Nowoczesny budynek",
         category: "architektura",
         description: "Współczesne arcydzieło architektury w centrum miasta"
@@ -34,8 +34,8 @@ const galleryData = [
     },
     {
         id: 5,
-        src: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg",
-        thumbnail: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg",
+        src: "https://plus.unsplash.com/premium_photo-1673306778968-5aab577a7365?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YmFja2dyb3VuZCUyMGltYWdlfGVufDB8fDB8fHww",
+        thumbnail: "https://plus.unsplash.com/premium_photo-1673306778968-5aab577a7365?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YmFja2dyb3VuZCUyMGltYWdlfGVufDB8fDB8fHww",
         title: "Panorama miasta",
         category: "architektura",
         description: "Panoramiczny widok na panoramę miasta o zmierzchu"
@@ -50,8 +50,8 @@ const galleryData = [
     },
     {
         id: 7,
-        src: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg",
-        thumbnail: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg",
+        src: "https://www.adobe.com/acrobat/hub/media_1291c3bf4f93e2dad9a76c32a053ea35af516e15d.jpeg?width=750&format=jpeg&optimize=medium",
+        thumbnail: "https://www.adobe.com/acrobat/hub/media_1291c3bf4f93e2dad9a76c32a053ea35af516e15d.jpeg?width=750&format=jpeg&optimize=medium",
         title: "Kanały Wenecji",
         category: "podroze",
         description: "Malownicze kanały Wenecji we Włoszech"
