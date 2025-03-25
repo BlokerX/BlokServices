@@ -400,7 +400,7 @@ if (json_last_error() !== JSON_ERROR_NONE) {
             <div class="footer-links">
                 <a href="<?php echo $config['documents']['terms-of-service']; ?>">Regulamin</a>
                 <a href="<?php echo $config['documents']['privacy-policy']; ?>">Polityka prywatności</a>
-                <a href="<?php echo $config['documents']['contact']; ?>">Kontakt</a>
+                <a href="">Kontakt</a>
             </div>
         </div>
     </footer>
