@@ -62,6 +62,14 @@
             "path": "../applications-page/index.php",
             "title": "Strona aplikacji"
         },
+        "calculator-page": {
+            "path": "../calculator-page/index.php",
+            "title": "Kalkulator | Aplikacja wbudowana"
+        },
+        "clock-page": {
+            "path": "../clock-page/index.php",
+            "title": "Zegar | Aplikacja wbudowana"
+        },
         "games-page": {
             "path": "../games-page/index.php",
             "title": "Strona gier"
