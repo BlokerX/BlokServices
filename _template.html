@@ -64,6 +64,220 @@
             <li>w 100% profesionalna i kompletna funkcyjnie</li>
             <li>Komunikaty do urzytkownika mają być przyjazne i skuteczne oraz klarowne</li>
         </ul>
+
+        <h2>Baza danych:</h2>
+        <ol>
+            <li>Użytkownicy
+                <ul>
+                    <li>Id</li>
+
+                    <li>Nick</li>
+                    <li>Zdjęcie profilowe</li>
+
+                    <li>Imię</li>
+                    <li>Nazwisko</li>
+
+                    <li>Adres e-mail</li>
+                    <li>Numer telefonu</li>
+
+                    <li>Login</li>
+                    <li>Hasło</li>
+
+                    <li>Data rejestracji</li>
+                    <li>Data ostatniego logowania</li>
+
+                    <li>Ostatnia aktywność</li>
+                    <li>Typ konta (admin, user)</li>
+                </ul>
+                <code>CREATE TABLE `blokservices`.`users` (
+                    `ID` INT NOT NULL AUTO_INCREMENT,
+                    `Nick` VARCHAR(50) NOT NULL,
+                    `PicturePath` TEXT NULL DEFAULT NULL,
+                    `Name` VARCHAR(50) NOT NULL,
+                    `Surname` VARCHAR(50) NOT NULL,
+                    `Email` TEXT NULL DEFAULT NULL,
+                    `PhoneNumber` VARCHAR(20) NULL DEFAULT NULL,
+                    `Password` TEXT NOT NULL,
+                    `RegisterDate` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                    `LastLoginDate` DATETIME NOT NULL,
+                    `Description` TEXT NOT NULL,
+                    `IsAdmin` BOOLEAN NOT NULL,
+                    `LinkedAccounts` JSON NULL DEFAULT NULL,
+                    PRIMARY KEY (`ID`)
+                  ) ENGINE=InnoDB;
+                  </code>
+            </li>
+
+            <li>Posty
+                <ul>
+                    <li>Id</li>
+                    <li>Id użytkownika</li>
+                    <li>Treść</li>
+                    <li>Obrazek</li>
+                    <li>Data dodania</li>
+                    <li>Komentarze</li>
+                </ul>
+                <code>CREATE TABLE `blokservices`.`posts` (
+                    `ID` INT NOT NULL AUTO_INCREMENT,
+                    `UserID` INT NOT NULL,
+                    `Text` TEXT NULL,
+                    `PicturePath` TEXT NULL DEFAULT NULL,
+                    `DateAdded` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                    `IsCommentable` BOOLEAN NOT NULL DEFAULT 1,
+                    PRIMARY KEY (`ID`),
+                    FOREIGN KEY (`UserID`) REFERENCES `users`(`ID`) ON DELETE CASCADE
+                  ) ENGINE=InnoDB;
+                  </code>
+            </li>
+
+            <li>Komentarze
+                <ul>
+                    <li>Id</li>
+                    <li>Id posta</li>
+                    <li>Id użytkownika</li>
+                    <li>Treść</li>
+                    <li>Data dodania</li>
+                </ul>
+                <code>CREATE TABLE `blokservices`.`comments` (
+                    `ID` INT NOT NULL AUTO_INCREMENT,
+                    `PostID` INT NOT NULL,
+                    `UserID` INT NOT NULL,
+                    `Text` TEXT NULL,
+                    `DateAdded` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                    PRIMARY KEY (`ID`),
+                    FOREIGN KEY (`PostID`) REFERENCES `posts`(`ID`) ON DELETE CASCADE,
+                    FOREIGN KEY (`UserID`) REFERENCES `users`(`ID`) ON DELETE CASCADE
+                  ) ENGINE=InnoDB;
+                  </code>
+            </li>
+
+            <li>Wiadomości chatu
+                <ul>
+                    <li>Id</li>
+                    <li>Id nadawcy</li>
+                    <li>Id odbiorcy</li>
+                    <li>Treść</li>
+                    <li>Data wysłania</li>
+                </ul>
+                <code>CREATE TABLE `blokservices`.`messages` (
+                    ID INT AUTO_INCREMENT PRIMARY KEY,
+                    SenderID INT NOT NULL,
+                    ReceiverID INT NOT NULL,
+                    Text TEXT NOT NULL,
+                    DateSent DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                    IsRead BOOLEAN NOT NULL DEFAULT 0,
+                    FOREIGN KEY (SenderID) REFERENCES users(ID) ON DELETE CASCADE,
+                    FOREIGN KEY (ReceiverID) REFERENCES users(ID) ON DELETE CASCADE
+                  );
+                  </code>
+            </li>
+
+            <li>Galeria zdjęć
+                <ul>
+                    <li>Id</li>
+                    <li>Id użytkownika</li>
+                    <li>Data dodania</li>
+                    <li>Opis zdjęcia</li>
+                </ul>
+                <code>CREATE TABLE `blokservices`.`photos` (
+                    ID INT AUTO_INCREMENT PRIMARY KEY,
+                    UserID INT NOT NULL,
+                    Title VARCHAR(100) NOT NULL,
+                    Description TEXT NULL,
+                    ImagePath TEXT NOT NULL,
+                    DateUploaded DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                    IsPublic BOOLEAN NOT NULL DEFAULT 0,
+                    FOREIGN KEY (UserID) REFERENCES users(ID) ON DELETE CASCADE
+                  );
+                  </code>
+            </li>
+            
+            <li>Dysk
+                <ul>
+                    <li>Id</li>
+                    <li>Id użytkownika</li>
+                    <li>Ścieżka do pliku</li>
+                    <li>Data dodania</li>
+                    <li>Opis pliku</li>
+                </ul>
+            </li>
+
+            <li>Gry
+                <ul>
+                    <li>Id</li>
+                    <li>Id użytkownika</li>
+                    <li>Ścieżka do gry</li>
+                    <li>Data dodania</li>
+                    <li>Opis gry</li>
+                    <li>Obrazek gry</li>
+                </ul>
+                <code>CREATE TABLE `blokservices`.`games` (
+                    ID INT AUTO_INCREMENT PRIMARY KEY,
+                    UserID INT NOT NULL,
+                    Name VARCHAR(100) NOT NULL,
+                    Description TEXT NULL,
+                    IconPath TEXT NOT NULL,
+                    GameURL TEXT NOT NULL,
+                    DateAdded DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                    LastPlayed DATETIME NULL DEFAULT NULL,
+                    FOREIGN KEY (UserID) REFERENCES users(ID) ON DELETE CASCADE
+                  );
+                  </code>
+            </li>
+
+            <li>Ustawienia
+                <ul>
+                    <li>Id</li>
+                    <li>Id użytkownika</li>
+                    <li>Motyw</li>
+                </ul>
+                <code>CREATE TABLE `blokservices`.`user_settings` (
+                    ID INT AUTO_INCREMENT PRIMARY KEY,
+                    UserID INT NOT NULL,
+                    Theme VARCHAR(20) DEFAULT 'light',
+                    FOREIGN KEY (UserID) REFERENCES users(ID) ON DELETE CASCADE
+                  ) ENGINE=InnoDB;
+                  </code>
+            </li>
+
+            <code>CREATE TABLE newsletters (
+                ID INT AUTO_INCREMENT PRIMARY KEY,         -- Id subskrypcji
+                UserID INT NOT NULL,                       -- Id użytkownika
+                Email VARCHAR(255) NOT NULL,               -- Email użytkownika
+                Subscribed BOOLEAN DEFAULT TRUE,           -- Subskrybowany (tak/nie)
+                SubscriptionDate DATE NOT NULL,            -- Data subskrypcji
+                UnsubscribeDate DATE DEFAULT NULL,         -- Data wypisania się
+                FOREIGN KEY (UserID) REFERENCES users(ID) ON DELETE CASCADE
+              ) ENGINE=InnoDB;
+            </code>
+            
+            <code>CREATE TABLE drive (
+                ID INT AUTO_INCREMENT PRIMARY KEY,         -- Id pliku
+                UserID INT NOT NULL,                       -- Id użytkownika
+                FileName VARCHAR(255) NOT NULL,            -- Nazwa pliku
+                FileType VARCHAR(50) NOT NULL,             -- Typ pliku (np. .jpg, .txt)
+                FileSize INT NOT NULL,                     -- Rozmiar pliku w bajtach
+                FilePath TEXT NOT NULL,                    -- Ścieżka do pliku w systemie
+                UploadDate DATE NOT NULL,                  -- Data dodania pliku
+                IsShared BOOLEAN DEFAULT FALSE,            -- Czy plik jest współdzielony
+                FOREIGN KEY (UserID) REFERENCES users(ID) ON DELETE CASCADE
+              ) ENGINE=InnoDB;
+            </code>
+            
+            <code>CREATE TABLE media (
+                ID INT AUTO_INCREMENT PRIMARY KEY,         -- Id multimediów
+                UserID INT NOT NULL,                       -- Id użytkownika
+                MediaType VARCHAR(50) NOT NULL,            -- Typ multimediów (np. image, video)
+                MediaPath TEXT NOT NULL,                   -- Ścieżka do pliku multimedialnego
+                Title VARCHAR(255) NULL,                   -- Tytuł (jeśli dotyczy)
+                Description TEXT NULL,                     -- Opis (jeśli dotyczy)
+                UploadDate DATE NOT NULL,                  -- Data dodania
+                IsPublic BOOLEAN DEFAULT FALSE,            -- Czy plik jest publiczny
+                FOREIGN KEY (UserID) REFERENCES users(ID) ON DELETE CASCADE
+              ) ENGINE=InnoDB;
+            </code>
+            
+        </ol>
     </main>
     
     <aside>
