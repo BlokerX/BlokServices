@@ -155,6 +155,7 @@ function initializeButtons() {
     // Przyciski logowania i rejestracji
     const loginButton = document.querySelector('.login-button');
     const registerButton = document.querySelector('.register-button');
+    const logoutButton = document.querySelector('.logout-button');
 
     if (loginButton) {
         loginButton.addEventListener('click', function () {
@@ -165,6 +166,21 @@ function initializeButtons() {
     if (registerButton) {
         registerButton.addEventListener('click', function () {
             window.location.href = '../register-page/index.php';
+        });
+    }
+
+    if (logoutButton) {
+        logoutButton.addEventListener('click', function () {
+            const timeout = 5; // Czas w sekundach
+            // Tutaj można dodać logikę wylogowania
+            for (let i = 0; i < timeout; i++) {
+                setTimeout(() => {
+                showNotification('Wylogowanie nastąpi za '+ (timeout - i) + ' sekund', 'info');
+                }, i * 1000);
+            }
+            setTimeout(() => {
+                window.location.href = '../login-page/logout-procedure.php';
+            }, timeout * 1000);
         });
     }
 }

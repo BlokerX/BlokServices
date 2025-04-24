@@ -92,7 +92,7 @@ header {
     gap: 10px;
 }
 
-.login-button, .register-button {
+.login-button, .register-button, .logout-button {
     padding: 8px 15px;
     border: none;
     border-radius: var(--border-radius);
@@ -101,13 +101,13 @@ header {
     transition: var(--transition);
 }
 
-.login-button {
+.login-button, .logout-button {
     background-color: transparent;
     color: white;
     border: 1px solid white;
 }
 
-.login-button:hover {
+.login-button:hover, .logout-button:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
@@ -118,6 +118,23 @@ header {
 
 .register-button:hover {
     background-color: #f0f0f0;
+}
+
+.user-avatar {
+    width: 220px;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid var(--secondary-color);
+}
+
+.mini-user-avatar {
+    width: 40px;
+    height: 40px;
+    margin: auto;
+    object-fit: cover;
+    border: 1px solid var(--secondary-color);
+    border-radius: 50%;
 }
 
 .theme-toggle {

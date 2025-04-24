@@ -39,6 +39,11 @@
             <button onclick="search()" class="search-button"><i class="fas fa-search"></i> Szukaj</button>
         </div>
 
+        <?php 
+        // Sprawdzenie, czy użytkownik jest już zalogowany
+        session_start();
+        if (!isset($_SESSION['user_id'])) {
+            echo '
         <!-- Gość -->
         <div class="header-actions guest-actions">
             <button class="login-button">Zaloguj</button>
@@ -46,19 +51,23 @@
             <button id="theme-toggle" class="theme-toggle">
                 <i class="fas fa-moon"></i>
             </button>
-        </div>
-
+        </div>';
+        }
+        else {
+            echo '
         <!-- Zalogowany użytkownik -->
-        <div class="header-actions user-actions" style="display: none;">
-            <a href="<?php echo $config['pages']['profile-page']['path']; ?>" class="profile-link">
-                <img src="<?php echo $config['images']['default-avatar']; ?>" alt="Avatar" class="user-avatar">
-                <span class="username">Użytkownik</span>
+        <div class="header-actions user-actions">
+            <a href="'.$config['pages']['profile-page']['path'].'" class="profile-link">
+                <img src="'.$_SESSION['user_avatar'].'" alt="Avatar" class="mini-user-avatar">
             </a>
             <button class="logout-button">Wyloguj</button>
-            <button id="theme-toggle-user" class="theme-toggle">
+            <button id="theme-toggle" class="theme-toggle">
                 <i class="fas fa-moon"></i>
             </button>
         </div>
+        ';
+        }
+        ?>
 
     </header>
 

@@ -23,8 +23,10 @@
     "page-container-path": "../../page-container/page-container.php",
     "pages": {
         "login-page": {
-            "path": "../login.html",
-            "title": "Strona logowania"
+            "path": "../login-page/index.php",
+            "title": "Strona logowania",
+            "login-procedure-path": "../login-page/login-procedure.php",
+            "logout-procedure-path": "../login-page/logout-procedure.php"
         },
         "register-page": {
             "path": "../register.html",
@@ -79,7 +81,7 @@
             "title": "Strona mediów"
         },
         "profile-page": {
-            "path": "../profile.html",
+            "path": "../profile-page/index.php",
             "title": "Strona profilu"
         },
         "chat-page": {
@@ -107,11 +109,21 @@
         "privacy-policy": "../../documents/privacy-policy.txt",
         "terms-of-service": "../../documents/terms-of-service.txt"
     },
-    "database": {
+    "db": {
         "host": "localhost",
-        "user": "",
+        "user": "root",
         "password": "",
-        "name": ""
+        "database": "blokservices",
+        "tables": {
+            "users": "users",
+            "posts": "posts",
+            "comments": "comments",
+            "messages": "messages",
+            "files": "files",
+            "friends": "friends",
+            "notifications": "notifications",
+            "settings": "settings"
+        }
     },
     "api": {
         "url": "http://localhost/proj_ai/api/"

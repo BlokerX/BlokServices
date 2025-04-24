@@ -1,12 +1,21 @@
 <?php
-// Wczytywanie z danych z pliku config.json
-$jsonData = file_get_contents('../../config.json');
-$config = json_decode($jsonData, true);
+// Wczytanie struktury strony
+include '../../page-container/json-config-load.php';
+
+// Sprawdź, czy użytkownik jest już zalogowany
+session_start();
+if (isset($_SESSION['user_id'])) {
+    // Użytkownik jest już zalogowany, przekieruj go do strony profilu
+    header("Location: " . $config['pages']['profile-page']['path']. "?user_name=" . $_SESSION['user_name']);
+    exit;
+}
 
 // Sprawdzanie błędów wczytywania pliku JSON
 if (json_last_error() !== JSON_ERROR_NONE) {
     die('Błąd wczytywania pliku konfiguracyjnego JSON.');
 }
+
+// Sprawdzenie, czy użytkownik jest już zalogowany
 ?>
 
 <!-- Kod HTML -->
@@ -66,13 +75,13 @@ if (json_last_error() !== JSON_ERROR_NONE) {
                 <h2>Logowanie</h2>
                 <p class="auth-subtitle">Witaj z powrotem! Zaloguj się, aby kontynuować.</p>
 
-                <form id="login-form" class="auth-form">
+                <form method="post" action="login-procedure.php" id="login-form" class="auth-form">
 
                     <div class="form-group">
                         <label for="email">Email lub nazwa użytkownika</label>
                         <div class="input-with-icon">
                             <i class="fas fa-user"></i>
-                            <input type="text" id="email" name="email" placeholder="Wprowadź email lub nazwę użytkownika" required>
+                            <input type="text" id="email" name="login" placeholder="Wprowadź email lub nazwę użytkownika" required>
                         </div>
                     </div>
 
@@ -93,6 +102,13 @@ if (json_last_error() !== JSON_ERROR_NONE) {
                     </div>
 
                     <button type="submit" class="auth-button">Zaloguj się</button>
+
+                    <?php 
+// Sprawdzanie czy próba logowania zakończyła się błędem
+if (isset($_GET['error']) && $_GET['error'] === 'invalid_credentials') {
+    echo '<label class="error-message">Sprawdź swoją nazwę konta oraz hasło i spróbuj ponownie.</label>';
+}
+                    ?>
 
                     <div class="social-login">
                         <p>Lub zaloguj się przez:</p>
@@ -136,7 +152,7 @@ if (json_last_error() !== JSON_ERROR_NONE) {
             <div class="footer-links">
                 <a href="<?php echo $config['documents']['terms-of-service']; ?>">Regulamin</a>
                 <a href="<?php echo $config['documents']['privacy-policy']; ?>">Polityka prywatności</a>
-                <a href="<?php echo $config['documents']['contact']; ?>">Kontakt</a>
+                <a>Kontakt</a>
             </div>
         </div>
     </footer>
