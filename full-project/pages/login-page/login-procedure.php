@@ -52,20 +52,19 @@ if (!$conn) {
 }
 
 // Użyj przygotowanych zapytań, aby uniknąć SQL Injection
-$query = "SELECT * FROM users WHERE nick = '$login' AND password = '$password'";
+$query = "SELECT * FROM users WHERE login = '$login' AND password = '$password'";
 
 $result = mysqli_query($conn, $query);
 
 if (mysqli_num_rows($result) > 0) {
     // Użytkownik istnieje, zaloguj go
     $user = mysqli_fetch_assoc($result);
-    session_start();
-    $_SESSION['user_id'] = $user['ID'];
-    $_SESSION['user_name'] = $user['Nick'];
-    $_SESSION['user_avatar'] = $user['Avatar'];
+    $_SESSION['user_id'] = $user['id'];
+    $_SESSION['user_name'] = $user['login'];
+    $_SESSION['user_avatar'] = $user['avatar'];
 
     // Zaktualizuj datę ostatniego logowania
-    $update_query = "UPDATE users SET LastLoginDate = NOW() WHERE ID = " . $user['ID'];
+    $update_query = "UPDATE users SET last_login_date = NOW() WHERE id = " . $user['id'];
     mysqli_query($conn, $update_query);
 
     // Jeśli zaznaczone "Zapamiętaj mnie", ustaw cookie

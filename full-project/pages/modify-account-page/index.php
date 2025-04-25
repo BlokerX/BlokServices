@@ -2,9 +2,9 @@
 // Wczytanie struktury strony
 include '../../page-container/json-config-load.php';
 
-// Sprawdź, czy użytkownik jest już zalogowany
+// Sprawdź, czy użytkownik nie jest zalogowany
 session_start();
-if (isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['user_id'])) {
     header("Location: " . $config['pages']['profile-page']['path'] . "?user_name=" . $_SESSION['user_name']);
     exit;
 }
@@ -15,19 +15,27 @@ if (isset($_SESSION['user_id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rejestracja</title>
+    <title>Edycja profilu</title>
 </head>
 <body>
-    <h2>Rejestracja</h2>
-    <form action="register-procedure.php" method="POST">
+    <h2>Edytuj profil</h2>
+    <form action="<?php echo $config['pages']['modify-account-page']['modify-account-procedure-path'];?>" method="POST">
         <div>
             <label for="login">Login:</label>
-            <input type="text" id="login" name="login" required>
+            <input type="text" id="login" name="login">
+        </div>
+        <!-- <div>
+            <label for="old_password">Stare hasło:</label>
+            <input type="password" id="old_password" name="old_password" required>
         </div>
         <div>
-            <label for="password">Hasło:</label>
-            <input type="password" id="password" name="password" required>
+            <label for="new_password">Nowe hasło:</label>
+            <input type="password" id="new_password" name="new_password">
         </div>
+        <div>
+            <label for="new_password_repeated">Hasło:</label>
+            <input type="password" id="new_password_repeated" name="new_password_repeated">
+        </div> -->
         <div>
             <label for="email">Email:</label>
             <input type="email" id="email" name="email">
@@ -42,15 +50,15 @@ if (isset($_SESSION['user_id'])) {
         </div>
         <div>
             <label for="name">Imię:</label>
-            <input type="text" id="name" name="name" required>
+            <input type="text" id="name" name="name">
         </div>
         <div>
             <label for="last_name">Nazwisko:</label>
-            <input type="text" id="last_name" name="last_name" required>
+            <input type="text" id="last_name" name="last_name">
         </div>
         <div>
             <label for="gender">Płeć:</label>
-            <select id="gender" name="gender" required>
+            <select id="gender" name="gender">
                 <option value="M">Mężczyzna</option>
                 <option value="K">Kobieta</option>
                 <option value="O">Inne</option>
@@ -58,13 +66,13 @@ if (isset($_SESSION['user_id'])) {
         </div>
         <div>
             <label for="birth_date">Data urodzenia:</label>
-            <input type="date" id="birth_date" name="birth_date" required>
+            <input type="date" id="birth_date" name="birth_date">
         </div>
         <div>
             <label for="description">Opis:</label>
             <textarea id="description" name="description"></textarea>
         </div>
-        <button type="submit">Zarejestruj się</button>
+        <button type="submit">Zaktualizuj profil</button>
     </form>
 </body>
 </html>

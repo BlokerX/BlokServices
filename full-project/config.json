@@ -32,6 +32,11 @@
             "path": "../register.html",
             "title": "Strona rejestracji"
         },
+        "modify-account-page": {
+            "path": "../modify-account-page/index.php",
+            "title": "Strona edytowania konta",
+            "modify-account-procedure-path": "../modify-account-page/modify-account-procedure.php"
+        },
         "welcome-page": {
             "path": "../welcome-page/index.php",
             "title": "Strona powitalna"
@@ -113,16 +118,9 @@
         "host": "localhost",
         "user": "root",
         "password": "",
-        "database": "blokservices",
+        "database": "blok_services",
         "tables": {
-            "users": "users",
-            "posts": "posts",
-            "comments": "comments",
-            "messages": "messages",
-            "files": "files",
-            "friends": "friends",
-            "notifications": "notifications",
-            "settings": "settings"
+            "users": "users"
         }
     },
     "api": {
