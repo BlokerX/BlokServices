@@ -125,7 +125,7 @@ if (isset($_GET['error']) && $_GET['error'] === 'invalid_credentials') {
                 </form>
 
                 <div class="auth-footer">
-                    <p>Nie masz jeszcze konta? <a href="register.html">Zarejestruj się</a></p>
+                    <p>Nie masz jeszcze konta? <a href="<?php echo $config['pages']['register-page']['path'];?>">Zarejestruj się</a></p>
                 </div>
             </div>
 

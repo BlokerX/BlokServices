@@ -38,22 +38,87 @@
     <section class="search-results-section">
         <h2>Wyniki wyszukiwania:</h2>
         <div class="search-results-grid">
-            <div class="search-results-grid">
-                <h3><i class="fas fa-search"></i> Rower</h3>
-                <p>Przejedź się na rowerze i ciesz się wolnością.</p>
-            </div>
-            <div class="search-results-grid">
-                <h3><i class="fas fa-search"></i> Rower</h3>
-                <p>Wypożycz rower i zwiedź miasto.</p>
-            </div>
-            <div class="search-results-grid">
-                <h3><i class="fas fa-search"></i> Rower</h3>
-                <p>Nowe modele rowerów w atrakcyjnych cenach.</p>
-            </div>
-            <div class="search-results-grid">
-                <h3><i class="fas fa-search"></i> Rower</h3>
-                <p>Wypożycz rower i zwiedź okolicę.</p>
-            </div>
+
+            <?php
+            // Połączenie z bazą danych
+            $conn = mysqli_connect($config['db']['host'], $config['db']['user'], $config['db']['password'], $config['db']['database']);
+            if (!$conn) {
+                die("Connection failed: " . mysqli_connect_error());
+            }
+
+            $search = $_GET['search'] ?? '';
+            $search = htmlspecialchars($search, ENT_QUOTES, 'UTF-8'); // zabezpieczenie przed XSS
+            $search = trim($search); // usunięcie zbędnych spacji
+            $search = preg_replace('/\s+/', ' ', $search); // usunięcie nadmiarowych spacji
+            $search = strtolower($search); // zamiana na małe litery
+            $search = mysqli_real_escape_string($conn, $search); // zabezpieczenie przed SQL Injection
+            
+            // Wyszukaj w użytkownikach
+            $query = "SELECT * FROM users 
+            WHERE login LIKE '%$search%' 
+            OR name LIKE '%$search%'
+            OR last_name LIKE '%$search%'
+            OR description LIKE '%$search%'";
+            $result = mysqli_query($conn, $query);
+
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo '<div class="search-results-grid"><a href="'.$config['pages']['profile-page']['path'].'?user_name=' . $row['login'] . '">';
+                    echo '<h3><i class="fas fa-search"></i> ' . htmlspecialchars($row['name']) . '</h3>';
+                    echo '<p>' . htmlspecialchars($row['description']) . '</p>';
+                    echo '</a></div>';
+                }
+            }
+
+            // Wyszukaj w postach
+            $query = "SELECT * FROM posts 
+            WHERE title LIKE '%$search%'
+            OR content LIKE '%$search%'";
+
+            $result = mysqli_query($conn, $query);
+
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo '<div class="search-results-grid"><a href="'.$config['pages']['post-page']['path'].'?post_id=' . $row['id'] . '">';
+                    echo '<h3><i class="fas fa-search"></i> ' . htmlspecialchars($row['title']) . '</h3>';
+                    echo '<p>' . htmlspecialchars($row['content']) . '</p>';
+                    echo '</a></div>';
+                }
+            }
+
+            // Wyszukaj w komentarzach
+            $query = "SELECT * FROM posts_comments 
+            WHERE content LIKE '%$search%'";
+            $result = mysqli_query($conn, $query);
+
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo '<div class="search-results-grid"><a href="'.$config['pages']['post-page']['path'].'?post_id=' . $row['post_id'] . '">';
+                    echo '<h3><i class="fas fa-search"></i> ' . htmlspecialchars($row['content']) . '</h3>';
+                    echo '<p>' . htmlspecialchars($row['content']) . '</p>';
+                    echo '</a></div>';
+                }
+            }
+
+            // Wyszukaj w grach
+            $query = "SELECT * FROM games 
+            WHERE title LIKE '%$search%'
+            OR description LIKE '%$search%'
+            OR type LIKE '%$search%'";
+            $result = mysqli_query($conn, $query);
+
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo '<div class="search-results-grid"><a href="'.$config['pages']['game-page']['path'].'?game_id=' . $row['id'] . '">';
+                    echo '<h3><i class="fas fa-search"></i> ' . htmlspecialchars($row['title']) . '</h3>';
+                    echo '<p>' . htmlspecialchars($row['description']) . '</p>';
+                    echo '</a></div>';
+                }
+            }
+
+            // Zamknięcie połączenia z bazą danych
+            mysqli_close($conn);
+            ?>
         </div>
     </section>
 
