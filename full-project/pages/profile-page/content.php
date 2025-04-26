@@ -25,13 +25,13 @@ mysqli_close($conn);
 // Walidacja danych użytkownika
 
 switch ($user['gender']) {
-    case 'M':
+    case 'Male':
         $user['gender'] = 'Mężczyzna';
         break;
-    case 'K':
+    case 'Female':
         $user['gender'] = 'Kobieta';
         break;
-    case 'O':
+    case 'Other':
         $user['gender'] = 'Inne';
         break;
     default:

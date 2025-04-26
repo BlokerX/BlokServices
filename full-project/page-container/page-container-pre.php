@@ -1,3 +1,24 @@
+<?php
+// Sprawdź czy użytkownik jest zalogowany
+$is_logged_in = false; // Zmienna do sprawdzenia, czy użytkownik jest zalogowany
+
+// Sprawdź, czy sesja jest już rozpoczęta
+if (session_status() == PHP_SESSION_NONE) {
+    session_start(); // Rozpocznij sesję, jeśli nie jest już rozpoczęta
+}
+
+if (!isset($_SESSION['user_id'])) {
+    // // Jeśli nie jest zalogowany, przekieruj na stronę logowania
+    // header('Location: ' . $config['pages']['login-page']['path']);
+    // exit;
+    $is_logged_in = false;
+}
+else {
+    $is_logged_in = true;
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="pl">
 
@@ -34,15 +55,20 @@
             <img src="<?php echo $config['images']['logo']; ?>" alt="Logo" class="logo">
             <h1><?php echo $config['app']['name']; ?></h1>
         </div>
+
+        <?php
+
+        // Search bar
+        if ($is_logged_in == true) {
+            echo '
         <div class="search-container">
             <input type="text" id="search_bar_input_text" placeholder="Wyszukaj...">
             <button onclick="search()" class="search-button"><i class="fas fa-search"></i> Szukaj</button>
-        </div>
+        </div>';
+        }
 
-        <?php 
-        // Sprawdzenie, czy użytkownik jest już zalogowany
-        session_start();
-        if (!isset($_SESSION['user_id'])) {
+        // Header actions
+        if ($is_logged_in == false) {
             echo '
         <!-- Gość -->
         <div class="header-actions guest-actions">
@@ -53,7 +79,7 @@
             </button>
         </div>';
         }
-        else {
+        else if ($is_logged_in == true) {
             echo '
         <!-- Zalogowany użytkownik -->
         <div class="header-actions user-actions">
@@ -67,8 +93,14 @@
         </div>
         ';
         }
+        
         ?>
 
     </header>
 
-<?php include 'navigation/nav.php'; ?>
+<?php
+// Navigation bar
+if($is_logged_in == true) {
+include 'navigation/nav.php';
+}
+?>

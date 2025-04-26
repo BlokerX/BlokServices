@@ -64,7 +64,7 @@
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo '<div class="search-results-grid"><a href="'.$config['pages']['profile-page']['path'].'?user_name=' . $row['login'] . '">';
-                    echo '<h3><i class="fas fa-search"></i> ' . htmlspecialchars($row['name']) . '</h3>';
+                    echo '<h3><i class="fas fa-search"></i> Użytkownik: ' . htmlspecialchars($row['login']) . '</h3>';
                     echo '<p>' . htmlspecialchars($row['description']) . '</p>';
                     echo '</a></div>';
                 }
@@ -80,7 +80,7 @@
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo '<div class="search-results-grid"><a href="'.$config['pages']['post-page']['path'].'?post_id=' . $row['id'] . '">';
-                    echo '<h3><i class="fas fa-search"></i> ' . htmlspecialchars($row['title']) . '</h3>';
+                    echo '<h3><i class="fas fa-search"></i> Post: ' . htmlspecialchars($row['title']) . '</h3>';
                     echo '<p>' . htmlspecialchars($row['content']) . '</p>';
                     echo '</a></div>';
                 }
@@ -94,7 +94,7 @@
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo '<div class="search-results-grid"><a href="'.$config['pages']['post-page']['path'].'?post_id=' . $row['post_id'] . '">';
-                    echo '<h3><i class="fas fa-search"></i> ' . htmlspecialchars($row['content']) . '</h3>';
+                    echo '<h3><i class="fas fa-search"></i> Komentarz do posta: ' . htmlspecialchars($row['content']) . '</h3>';
                     echo '<p>' . htmlspecialchars($row['content']) . '</p>';
                     echo '</a></div>';
                 }
@@ -110,7 +110,7 @@
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo '<div class="search-results-grid"><a href="'.$config['pages']['game-page']['path'].'?game_id=' . $row['id'] . '">';
-                    echo '<h3><i class="fas fa-search"></i> ' . htmlspecialchars($row['title']) . '</h3>';
+                    echo '<h3><i class="fas fa-search"></i> Gra: ' . htmlspecialchars($row['title']) . '</h3>';
                     echo '<p>' . htmlspecialchars($row['description']) . '</p>';
                     echo '</a></div>';
                 }
