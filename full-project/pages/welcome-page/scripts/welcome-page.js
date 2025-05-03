@@ -56,7 +56,7 @@ function navigateToFeature(featureName) {
             url += '../../social-page/index.php';
             break;
         case 'wiadomości':
-            url += '../../newsletters-page/index.php';
+            url += '../../chat-page/index.php';
             break;
         case 'galeria':
             url += '../../gallery-page/index.php';

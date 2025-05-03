@@ -49,6 +49,7 @@ function initializePostInteractions() {
             // Informacja (w prawdziwej implementacji byłoby wysłanie do API)
             console.log(`Post ${postId} lajk zmieniony na: ${!isLiked}`);
             
+            console.log(`postId: ${postId}, isLiked: ${!isLiked}`);
             // Symulacja wysłania danych do serwera
             updateLikeStatus(postId, !isLiked);
         });
@@ -217,6 +218,40 @@ function updateLikeStatus(postId, isLiked) {
     // .then(response => response.json())
     // .then(data => console.log('Odpowiedź serwera:', data))
     // .catch(error => console.error('Błąd:', error));
+
+    // Daj operację w ajaxie która aktualizuje status lajka na serwerze
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log('Odpowiedź serwera:', this.responseText);
+        }
+    }
+
+    xmlhttp.open("POST", "../../api/social-page/like.php", true);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+    console.log(`postId: ${postId}, isLiked: ${isLiked}`);
+    xmlhttp.send("postId=" + encodeURIComponent(postId) + "&isLiked=" + encodeURIComponent(isLiked));
+
+    // teraz część w php:
+    // $postId = $_POST['postId'];
+    // $isLiked = $_POST['isLiked'];
+    // $userId = $_SESSION['user_id']; // ID aktualnie zalogowanego użytkownika
+    // $query = "UPDATE posts SET isLiked = ? WHERE postId = ? AND userId = ?";
+    // $stmt = $conn->prepare($query);
+    // $stmt->bind_param('iii', $isLiked, $postId, $userId);
+    // $stmt->execute();
+    // $stmt->close();
+    // $conn->close();
+    // echo json_encode(['status' => 'success', 'message' => 'Status lajka zaktualizowany']);
+
+    // A teraz gdzie jest PHP? W jakim pliku? Jakie jest połączenie z bazą danych?
+    // Jakie są tabele? Jakie są kolumny? Jakie są relacje między tabelami?
+    // Odpowiedź:
+    // W pliku api/posts/like.php, połączenie z bazą danych jest w pliku db.php, tabele to posts i users, kolumny to postId, userId, isLiked, relacje to postId -> posts.postId, userId -> users.userId
+    // W bazie danych MySQL, tabele są połączone przez klucze obce, a relacje są zdefiniowane w schemacie bazy danych.
+    // W pliku db.php jest połączenie z bazą danych, a w pliku api/posts/like.php jest kod PHP, który aktualizuje status lajka w bazie danych.
+    // W pliku api/posts/like.php jest kod PHP, który aktualizuje status lajka w bazie danych.
 }
 
 /**
@@ -563,147 +598,3 @@ function initializeFriendSuggestions() {
     });
 }
 
-/**
- * Wyświetla powiadomienie
- * @param {string} message - Treść powiadomienia
- * @param {string} type - Typ powiadomienia (success, error, info, warning)
- */
-function showNotification(message, type = 'info') {
-    // Sprawdź, czy kontener powiadomień istnieje
-    let notificationsContainer = document.querySelector('.notifications-container');
-    
-    if (!notificationsContainer) {
-        // Utwórz kontener powiadomień
-        notificationsContainer = document.createElement('div');
-        notificationsContainer.className = 'notifications-container';
-        document.body.appendChild(notificationsContainer);
-        
-        // Dodaj style do kontenera
-        notificationsContainer.style.position = 'fixed';
-        notificationsContainer.style.top = '20px';
-        notificationsContainer.style.right = '20px';
-        notificationsContainer.style.zIndex = '9999';
-        notificationsContainer.style.display = 'flex';
-        notificationsContainer.style.flexDirection = 'column';
-        notificationsContainer.style.gap = '10px';
-    }
-    
-    // Utwórz nowe powiadomienie
-    const notification = document.createElement('div');
-    notification.className = `notification ${type}`;
-    notification.innerHTML = `
-        <div class="notification-icon">
-            <i class="fas ${getIconForType(type)}"></i>
-        </div>
-        <div class="notification-content">
-            <p>${message}</p>
-        </div>
-        <div class="notification-close">
-            <i class="fas fa-times"></i>
-        </div>
-    `;
-    
-    // Dodaj style do powiadomienia
-    notification.style.display = 'flex';
-    notification.style.alignItems = 'center';
-    notification.style.padding = '12px 15px';
-    notification.style.backgroundColor = 'white';
-    notification.style.borderRadius = '8px';
-    notification.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
-    notification.style.borderLeft = `4px solid ${getColorForType(type)}`;
-    notification.style.minWidth = '300px';
-    notification.style.opacity = '0';
-    notification.style.transform = 'translateX(50px)';
-    notification.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-    
-    // Dodaj style dla ikon i treści
-    const styleSheet = document.createElement('style');
-    styleSheet.textContent = `
-        .notification-icon {
-            margin-right: 12px;
-            color: ${getColorForType(type)};
-            font-size: 1.2rem;
-        }
-        .notification-content {
-            flex-grow: 1;
-        }
-        .notification-content p {
-            margin: 0;
-            color: #333;
-        }
-        .notification-close {
-            cursor: pointer;
-            color: #999;
-            font-size: 0.9rem;
-        }
-        .notification-close:hover {
-            color: #333;
-        }
-    `;
-    document.head.appendChild(styleSheet);
-    
-    // Dodaj powiadomienie do kontenera
-    notificationsContainer.appendChild(notification);
-    
-    // Animacja wejścia
-    setTimeout(() => {
-        notification.style.opacity = '1';
-        notification.style.transform = 'translateX(0)';
-    }, 10);
-    
-    // Dodaj obsługę zamknięcia
-    const closeBtn = notification.querySelector('.notification-close');
-    closeBtn.addEventListener('click', () => {
-        notification.style.opacity = '0';
-        notification.style.transform = 'translateX(50px)';
-        
-        setTimeout(() => {
-            notification.remove();
-        }, 300);
-    });
-    
-    // Automatyczne zamknięcie po 5 sekundach
-    setTimeout(() => {
-        if (notification.parentNode) {
-            notification.style.opacity = '0';
-            notification.style.transform = 'translateX(50px)';
-            
-            setTimeout(() => {
-                notification.remove();
-            }, 300);
-        }
-    }, 5000);
-}
-
-/**
- * Zwraca odpowiednią ikonę dla typu powiadomienia
- * @param {string} type - Typ powiadomienia
- * @returns {string} - Klasa ikony FontAwesome
- */
-function getIconForType(type) {
-    switch (type) {
-        case 'success': return 'fa-check-circle';
-        case 'error': return 'fa-exclamation-circle';
-        case 'warning': return 'fa-exclamation-triangle';
-        case 'info':
-        default: return 'fa-info-circle';
-    }
-}
-
-/**
- * Zwraca odpowiedni kolor dla typu powiadomienia
- * @param {string} type - Typ powiadomienia
- * @returns {string} - Kod koloru
- */
-function getColorForType(type) {
-    switch (type) {
-        case 'success': return '#4CAF50';
-        case 'error': return '#F44336';
-        case 'warning': return '#FFC107';
-        case 'info':
-        default: return 'var(--primary-color)';
-    }
-}
-
-// Inicjalizacja po załadowaniu dokumentu
-document.addEventListener('DOMContentLoaded', initializeSubpage);
