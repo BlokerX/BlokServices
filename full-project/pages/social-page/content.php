@@ -38,14 +38,14 @@ if (!isset($_SESSION['user_id'])) {
         <div class="post-creator">
                 <img src="<?php echo $_SESSION['user_avatar']; ?>" alt="Twój avatar" class="user-avatar">
             <div class="post-form">
-                <textarea class="new-post-content-textarea" placeholder="Podziel się swoimi myślami..."></textarea>
+                <textarea id="post-content" class="new-post-content-textarea" placeholder="Podziel się swoimi myślami..."></textarea>
                 <div class="post-controls">
                     <div class="post-attachments">
                         <button class="attachment-btn"><i class="fas fa-image"></i> Zdjęcie</button>
                         <button class="attachment-btn"><i class="fas fa-video"></i> Film</button>
                         <button class="attachment-btn"><i class="fas fa-link"></i> Link</button>
                     </div>
-                    <button class="publish-btn">Opublikuj</button>
+                    <button id="add-post-btn" class="publish-btn">Opublikuj</button>
                 </div>
             </div>
         </div>

@@ -21,6 +21,34 @@ function initializeSubpage() {
  * Inicjalizacja interakcji z postami (lajki, komentarze)
  */
 function initializePostInteractions() {
+    // Obsługa przycisku dodawania posta
+    const addPostButton = document.getElementById('add-post-btn');
+    if (addPostButton) {
+        addPostButton.addEventListener('click', function() {
+            const title = ""/*document.getElementById('post-title').value.trim()*/;
+            const content = document.getElementById('post-content').value.trim();
+            const accessLevel = "public" /*document.querySelector('input[name="access-level"]:checked').value*/;
+            const isCommentable = true /*document.getElementById('is-commentable').checked*/;
+
+            if (content === "") {
+                showNotification('Treść posta nie może być pusta', 'error');
+                return;
+            };
+
+            // Dodaj post do interfejsu
+            addPostToUI(title, content, accessLevel, isCommentable);
+
+            // Wyślij post do serwera
+            submitPost(title, content, accessLevel, isCommentable);
+
+            // Wyczyść pola
+            //document.getElementById('post-title').value = '';
+            document.getElementById('post-content').value = '';
+            //document.querySelector('input[name="access-level"][value="public"]').checked = true;
+            //document.getElementById('is-commentable').checked = true;
+        });
+    };
+
     // Obsługa przycisków lubię to
     const likeButtons = document.querySelectorAll('.like-btn');
     likeButtons.forEach(button => {
@@ -198,28 +226,78 @@ function addCommentToUI(postCard, commentText) {
     });
 }
 
+// add post to UI
+function addPostToUI(title, content, accessLevel, isCommentable) {
+    const postsContainer = document.querySelector('.posts-container');
+    const newPost = document.createElement('div');
+    newPost.className = 'post-card';
+    newPost.dataset.postId = Math.floor(Math.random() * 1000) + 1; // Losowe ID postu
+    
+    newPost.innerHTML = `
+        <div class="post-header">
+            <div class="post-author">
+                <img src="../../assets/img/avatars/default-avatar.png" alt="Avatar użytkownika">
+                <div class="author-info">
+                    <h4>Ty</h4>
+                    <span class="post-time">Teraz</span>
+                </div>
+            </div>
+            <div class="post-options">
+                <i class="fas fa-ellipsis-h"></i>
+            </div>
+        </div>
+        <div class="post-content">
+            <p>${content}</p>
+        </div>
+        <div class="post-interactions">
+            <div class="interaction-stats">
+                <span class="likes-count"><i class="fas fa-thumbs-up"></i> <span>0</span></span>
+                <span class="comments-count">0 komentarzy</span>
+            </div>
+            <div class="interaction-buttons">
+                <button class="like-btn" data-liked="false"><i class="far fa-thumbs-up"></i> Lubię to</button>
+                <button class="comment-btn"><i class="far fa-comment"></i> Komentuj</button>
+                <button class="share-btn"><i class="far fa-share-square"></i> Udostępnij</button>
+            </div>
+        </div>
+        <div class="comments-section" style="display: none;">
+            <div class="comments-container"></div>
+            <div class="add-comment">
+                <img src="../../assets/img/avatars/default-avatar.png" alt="Twój avatar">
+                <input type="text" placeholder="Napisz komentarz...">
+                <button class="submit-comment-btn"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    `;
+}
+
+// submit post to server
+
+function submitPost(title, content, accessLevel, isCommentable) {
+    console.log(`Wysyłanie posta: ${title}, ${content}, ${accessLevel}, ${isCommentable}`);
+
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log('Odpowiedź serwera:', this.responseText);
+        }
+    }
+
+    xmlhttp.open("POST", "../../api/social-page/add_post.php", true);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+    console.log(`title: ${title}, content: ${content}, accessLevel: ${accessLevel}, isCommentable: ${isCommentable}`);
+    xmlhttp.send("title=" + encodeURIComponent(title) + "&content=" + encodeURIComponent(content) + "&accessLevel=" + encodeURIComponent(accessLevel) + "&isCommentable=" + encodeURIComponent(isCommentable));
+}
+
 /**
  * Aktualizuje status lajka na serwerze
  * @param {number} postId - ID postu
  * @param {boolean} isLiked - Status lajka
  */
 function updateLikeStatus(postId, isLiked) {
-    // W rzeczywistej implementacji byłoby wysłanie do API
     console.log(`Wysyłanie aktualizacji lajka dla postu ${postId}: ${isLiked}`);
-    
-    // Przykład implementacji:
-    // fetch('/api/posts/like', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({ postId, isLiked }),
-    // })
-    // .then(response => response.json())
-    // .then(data => console.log('Odpowiedź serwera:', data))
-    // .catch(error => console.error('Błąd:', error));
 
-    // Daj operację w ajaxie która aktualizuje status lajka na serwerze
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
@@ -232,26 +310,6 @@ function updateLikeStatus(postId, isLiked) {
 
     console.log(`postId: ${postId}, isLiked: ${isLiked}`);
     xmlhttp.send("postId=" + encodeURIComponent(postId) + "&isLiked=" + encodeURIComponent(isLiked));
-
-    // teraz część w php:
-    // $postId = $_POST['postId'];
-    // $isLiked = $_POST['isLiked'];
-    // $userId = $_SESSION['user_id']; // ID aktualnie zalogowanego użytkownika
-    // $query = "UPDATE posts SET isLiked = ? WHERE postId = ? AND userId = ?";
-    // $stmt = $conn->prepare($query);
-    // $stmt->bind_param('iii', $isLiked, $postId, $userId);
-    // $stmt->execute();
-    // $stmt->close();
-    // $conn->close();
-    // echo json_encode(['status' => 'success', 'message' => 'Status lajka zaktualizowany']);
-
-    // A teraz gdzie jest PHP? W jakim pliku? Jakie jest połączenie z bazą danych?
-    // Jakie są tabele? Jakie są kolumny? Jakie są relacje między tabelami?
-    // Odpowiedź:
-    // W pliku api/posts/like.php, połączenie z bazą danych jest w pliku db.php, tabele to posts i users, kolumny to postId, userId, isLiked, relacje to postId -> posts.postId, userId -> users.userId
-    // W bazie danych MySQL, tabele są połączone przez klucze obce, a relacje są zdefiniowane w schemacie bazy danych.
-    // W pliku db.php jest połączenie z bazą danych, a w pliku api/posts/like.php jest kod PHP, który aktualizuje status lajka w bazie danych.
-    // W pliku api/posts/like.php jest kod PHP, który aktualizuje status lajka w bazie danych.
 }
 
 /**
@@ -260,20 +318,20 @@ function updateLikeStatus(postId, isLiked) {
  * @param {string} commentText - Treść komentarza
  */
 function submitComment(postId, commentText) {
-    // W rzeczywistej implementacji byłoby wysłanie do API
     console.log(`Wysyłanie komentarza dla postu ${postId}: ${commentText}`);
-    
-    // Przykład implementacji:
-    // fetch('/api/posts/comment', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({ postId, commentText }),
-    // })
-    // .then(response => response.json())
-    // .then(data => console.log('Odpowiedź serwera:', data))
-    // .catch(error => console.error('Błąd:', error));
+
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log('Odpowiedź serwera:', this.responseText);
+        }
+    }
+
+    xmlhttp.open("POST", "../../api/social-page/add_comment.php", true);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+    console.log(`postId: ${postId}, commentText: ${commentText}`);
+    xmlhttp.send("postId=" + encodeURIComponent(postId) + "&commentText=" + encodeURIComponent(commentText));
 }
 
 /**
@@ -449,128 +507,128 @@ function initializeLoadMore() {
 /**
  * Ładuje więcej postów
  */
-function loadMorePosts() {
-    const postsContainer = document.querySelector('.posts-container');
+// function loadMorePosts() {
+//     const postsContainer = document.querySelector('.posts-container');
     
-    // W rzeczywistej implementacji posty byłyby pobierane z serwera
-    // Na potrzeby przykładu dodajemy nowy post do interfejsu
-    const newPost = document.createElement('div');
-    newPost.className = 'post-card';
-    newPost.dataset.postId = Math.floor(Math.random() * 1000) + 4; // Losowe ID postu
+//     // W rzeczywistej implementacji posty byłyby pobierane z serwera
+//     // Na potrzeby przykładu dodajemy nowy post do interfejsu
+//     const newPost = document.createElement('div');
+//     newPost.className = 'post-card';
+//     newPost.dataset.postId = Math.floor(Math.random() * 1000) + 4; // Losowe ID postu
     
-    newPost.innerHTML = `
-        <div class="post-header">
-            <div class="post-author">
-                <img src="../../assets/img/avatars/user9.png" alt="Avatar użytkownika">
-                <div class="author-info">
-                    <h4>Karolina Malinowska</h4>
-                    <span class="post-time">Przed chwilą</span>
-                </div>
-            </div>
-            <div class="post-options">
-                <i class="fas fa-ellipsis-h"></i>
-            </div>
-        </div>
-        <div class="post-content">
-            <p>Właśnie odkryłam świetne miejsce na weekend za miastem! Kto ma ochotę na wycieczkę w ten weekend?</p>
-        </div>
-        <div class="post-interactions">
-            <div class="interaction-stats">
-                <span class="likes-count"><i class="fas fa-thumbs-up"></i> <span>0</span></span>
-                <span class="comments-count">0 komentarzy</span>
-            </div>
-            <div class="interaction-buttons">
-                <button class="like-btn" data-liked="false"><i class="far fa-thumbs-up"></i> Lubię to</button>
-                <button class="comment-btn"><i class="far fa-comment"></i> Komentuj</button>
-                <button class="share-btn"><i class="far fa-share-square"></i> Udostępnij</button>
-            </div>
-        </div>
-        <div class="comments-section">
-            <div class="comments-container"></div>
-            <div class="add-comment">
-                <img src="../../assets/img/avatars/default-avatar.png" alt="Twój avatar">
-                <input type="text" placeholder="Napisz komentarz...">
-                <button class="submit-comment-btn"><i class="fas fa-paper-plane"></i></button>
-            </div>
-        </div>
-    `;
+//     newPost.innerHTML = `
+//         <div class="post-header">
+//             <div class="post-author">
+//                 <img src="../../assets/img/avatars/user9.png" alt="Avatar użytkownika">
+//                 <div class="author-info">
+//                     <h4>Karolina Malinowska</h4>
+//                     <span class="post-time">Przed chwilą</span>
+//                 </div>
+//             </div>
+//             <div class="post-options">
+//                 <i class="fas fa-ellipsis-h"></i>
+//             </div>
+//         </div>
+//         <div class="post-content">
+//             <p>Właśnie odkryłam świetne miejsce na weekend za miastem! Kto ma ochotę na wycieczkę w ten weekend?</p>
+//         </div>
+//         <div class="post-interactions">
+//             <div class="interaction-stats">
+//                 <span class="likes-count"><i class="fas fa-thumbs-up"></i> <span>0</span></span>
+//                 <span class="comments-count">0 komentarzy</span>
+//             </div>
+//             <div class="interaction-buttons">
+//                 <button class="like-btn" data-liked="false"><i class="far fa-thumbs-up"></i> Lubię to</button>
+//                 <button class="comment-btn"><i class="far fa-comment"></i> Komentuj</button>
+//                 <button class="share-btn"><i class="far fa-share-square"></i> Udostępnij</button>
+//             </div>
+//         </div>
+//         <div class="comments-section">
+//             <div class="comments-container"></div>
+//             <div class="add-comment">
+//                 <img src="../../assets/img/avatars/default-avatar.png" alt="Twój avatar">
+//                 <input type="text" placeholder="Napisz komentarz...">
+//                 <button class="submit-comment-btn"><i class="fas fa-paper-plane"></i></button>
+//             </div>
+//         </div>
+//     `;
     
-    // Dodaj nowy post do kontenera
-    postsContainer.appendChild(newPost);
+//     // Dodaj nowy post do kontenera
+//     postsContainer.appendChild(newPost);
     
-    // Dodaj obsługę zdarzeń do nowego postu
-    const newLikeBtn = newPost.querySelector('.like-btn');
-    newLikeBtn.addEventListener('click', function() {
-        const postId = this.closest('.post-card').dataset.postId;
-        const isLiked = this.dataset.liked === 'true';
-        const likeCountElement = this.closest('.post-card').querySelector('.likes-count span');
-        let likeCount = parseInt(likeCountElement.textContent);
+//     // Dodaj obsługę zdarzeń do nowego postu
+//     const newLikeBtn = newPost.querySelector('.like-btn');
+//     newLikeBtn.addEventListener('click', function() {
+//         const postId = this.closest('.post-card').dataset.postId;
+//         const isLiked = this.dataset.liked === 'true';
+//         const likeCountElement = this.closest('.post-card').querySelector('.likes-count span');
+//         let likeCount = parseInt(likeCountElement.textContent);
         
-        if (isLiked) {
-            this.dataset.liked = 'false';
-            this.innerHTML = '<i class="far fa-thumbs-up"></i> Lubię to';
-            this.classList.remove('active');
-            likeCount--;
-        } else {
-            this.dataset.liked = 'true';
-            this.innerHTML = '<i class="fas fa-thumbs-up"></i> Lubię to';
-            this.classList.add('active');
-            likeCount++;
-        }
+//         if (isLiked) {
+//             this.dataset.liked = 'false';
+//             this.innerHTML = '<i class="far fa-thumbs-up"></i> Lubię to';
+//             this.classList.remove('active');
+//             likeCount--;
+//         } else {
+//             this.dataset.liked = 'true';
+//             this.innerHTML = '<i class="fas fa-thumbs-up"></i> Lubię to';
+//             this.classList.add('active');
+//             likeCount++;
+//         }
         
-        likeCountElement.textContent = likeCount;
-        updateLikeStatus(postId, !isLiked);
-    });
+//         likeCountElement.textContent = likeCount;
+//         updateLikeStatus(postId, !isLiked);
+//     });
     
-    const newCommentBtn = newPost.querySelector('.comment-btn');
-    newCommentBtn.addEventListener('click', function() {
-        const commentsSection = this.closest('.post-card').querySelector('.comments-section');
-        if (commentsSection.style.display === 'none') {
-            commentsSection.style.display = 'block';
-            commentsSection.querySelector('input').focus();
-        } else {
-            commentsSection.style.display = 'none';
-        }
-    });
+//     const newCommentBtn = newPost.querySelector('.comment-btn');
+//     newCommentBtn.addEventListener('click', function() {
+//         const commentsSection = this.closest('.post-card').querySelector('.comments-section');
+//         if (commentsSection.style.display === 'none') {
+//             commentsSection.style.display = 'block';
+//             commentsSection.querySelector('input').focus();
+//         } else {
+//             commentsSection.style.display = 'none';
+//         }
+//     });
     
-    const newSubmitCommentBtn = newPost.querySelector('.submit-comment-btn');
-    newSubmitCommentBtn.addEventListener('click', function() {
-        const postCard = this.closest('.post-card');
-        const postId = postCard.dataset.postId;
-        const commentInput = this.closest('.add-comment').querySelector('input');
-        const commentText = commentInput.value.trim();
+//     const newSubmitCommentBtn = newPost.querySelector('.submit-comment-btn');
+//     newSubmitCommentBtn.addEventListener('click', function() {
+//         const postCard = this.closest('.post-card');
+//         const postId = postCard.dataset.postId;
+//         const commentInput = this.closest('.add-comment').querySelector('input');
+//         const commentText = commentInput.value.trim();
         
-        if (commentText) {
-            addCommentToUI(postCard, commentText);
-            submitComment(postId, commentText);
-            commentInput.value = '';
-        }
-    });
+//         if (commentText) {
+//             addCommentToUI(postCard, commentText);
+//             submitComment(postId, commentText);
+//             commentInput.value = '';
+//         }
+//     });
     
-    const newCommentInput = newPost.querySelector('.add-comment input');
-    newCommentInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            const postCard = this.closest('.post-card');
-            const postId = postCard.dataset.postId;
-            const commentText = this.value.trim();
+//     const newCommentInput = newPost.querySelector('.add-comment input');
+//     newCommentInput.addEventListener('keypress', function(e) {
+//         if (e.key === 'Enter') {
+//             const postCard = this.closest('.post-card');
+//             const postId = postCard.dataset.postId;
+//             const commentText = this.value.trim();
             
-            if (commentText) {
-                addCommentToUI(postCard, commentText);
-                submitComment(postId, commentText);
-                this.value = '';
-            }
-        }
-    });
+//             if (commentText) {
+//                 addCommentToUI(postCard, commentText);
+//                 submitComment(postId, commentText);
+//                 this.value = '';
+//             }
+//         }
+//     });
     
-    const newPostOptions = newPost.querySelector('.post-options');
-    newPostOptions.addEventListener('click', function() {
-        const postId = this.closest('.post-card').dataset.postId;
-        showPostMenu(this, postId);
-    });
+//     const newPostOptions = newPost.querySelector('.post-options');
+//     newPostOptions.addEventListener('click', function() {
+//         const postId = this.closest('.post-card').dataset.postId;
+//         showPostMenu(this, postId);
+//     });
     
-    // Powiadomienie o załadowaniu nowych postów
-    showNotification('Załadowano nowe posty', 'success');
-}
+//     // Powiadomienie o załadowaniu nowych postów
+//     showNotification('Załadowano nowe posty', 'success');
+// }
 
 /*
  * Inicjalizacja sugestii znajomych
