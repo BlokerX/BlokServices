@@ -53,147 +53,15 @@ if (!isset($_SESSION['user_id'])) {
 
     <section class="posts-feed">
         <div class="feed-filter">
-            <button class="filter-btn active" data-filter="all">Wszystkie</button>
-            <button class="filter-btn" data-filter="friends">Znajomi</button>
-            <button class="filter-btn" data-filter="popular">Popularne</button>
-            <button class="filter-btn" data-filter="recent">Najnowsze</button>
+            <button id="all-filter" class="filter-btn active" data-filter="all">Wszystkie</button>
+            <button id="recent-filter" class="filter-btn" data-filter="recent">Najnowsze</button>
+            <button id="friends-filter" class="filter-btn" data-filter="friends">Znajomi</button>
+            <button id="popular-filter" class="filter-btn" data-filter="popular">Popularne</button>
         </div>
 
         <div class="posts-container">
 
-            <?php
-            // Wczytanie postów z bazy danych
-
-            $conn = mysqli_connect($config['db']['host'], $config['db']['user'], $config['db']['password'], $config['db']['database']);
-            if (!$conn) {
-                die("Connection failed: " . mysqli_connect_error());
-            }
-
-            // Zapytanie do bazy danych o posty
-            $sql = "SELECT * FROM posts ORDER BY creation_date DESC LIMIT 10"; // Przykładowe zapytanie
-
-            // Wykonanie zapytania
-            $posts = $conn->query($sql);
-
-            // Sprawdzenie, czy są posty
-            if ($posts->num_rows > 0) {
-
-                // Wyświetlenie postów
-                while ($post = $posts->fetch_assoc()) {
-
-                    // Zapytaj o autora postów
-                    $authorSql = "SELECT * FROM users WHERE id = ?";
-                    $stmt = $conn->prepare($authorSql);
-                    $stmt->bind_param("i", $post['owner_user_id']);
-
-                    $stmt->execute();
-                    $authorResult = $stmt->get_result();
-                    $author = $authorResult->fetch_assoc();
-                    $stmt->close();
-
-                    echo '<div class="post-card" data-post-id="' . $post['id'] . '">';
-                    echo '<div class="post-header">';
-                    echo '<div class="post-author">';
-                    echo '<img src="' . $author['avatar'] . '" alt="Avatar użytkownika">';
-                    echo '<div class="author-info">';
-                    echo '<h4>' . $author['login'] . '</h4>';
-                    echo '<span class="post-time">' . $post['creation_date'] . '</span>';
-                    echo '</div></div>';
-                    echo '<div class="post-options"><i class="fas fa-ellipsis-h"></i></div></div>';
-                    echo '<div class="post-content"><p>' . $post['content'] . '</p></div>';
-                    echo '<div class="post-interactions">';
-                    echo '<div class="interaction-stats">';
-
-                    // Zapytaj o liczbę polubień
-                    $likesSql = "SELECT COUNT(*) as likes_count FROM posts_likes WHERE post_id = ?";
-                    $stmt = $conn->prepare($likesSql);
-                    $stmt->bind_param("i", $post['id']);
-                    $stmt->execute();
-                    $likesResult = $stmt->get_result();
-                    $likes = $likesResult->fetch_assoc();
-                    $likes = $likes['likes_count'];
-                    $stmt->close();
-
-                    // Zapytaj o liczbę komentarzy
-                    $commentsSql = "SELECT COUNT(*) as comments_count FROM posts_comments WHERE post_id = ?";
-                    $stmt = $conn->prepare($commentsSql);
-                    $stmt->bind_param("i", $post['id']);
-                    $stmt->execute();
-                    $commentsResult = $stmt->get_result();
-                    $comments = $commentsResult->fetch_assoc();
-                    $stmt->close();
-                    $comments = $comments['comments_count'];
-
-                    // Sprawdź, czy twója osoba polubiła post
-                    $likedSql = "SELECT * FROM posts_likes WHERE post_id = ? AND user_id = ?";
-                    $stmt = $conn->prepare($likedSql);
-                    $stmt->bind_param("ii", $post['id'], $_SESSION['user_id']);
-                    $stmt->execute();
-                    $likedResult = $stmt->get_result();
-                    $liked = $likedResult->num_rows > 0;
-                    $stmt->close();
-
-                    echo '<span class="likes-count"><i class="fas fa-thumbs-up"></i> <span>' . $likes . '</span></span>';
-                    echo '<span class="comments-count">' . $comments . ' komentarzy</span>';
-                    echo '</div>';
-                    echo '<div class="interaction-buttons">';
-
-                    if ($liked) {
-                        echo '<button class="like-btn like-btn-currently-liked" data-liked="true"><i class="fas fa-thumbs-up"></i> Lubię to</button>';
-                    } else {
-                        echo '<button class="like-btn" data-liked="false"><i class="far fa-thumbs-up"></i> Lubię to</button>';
-                    }
-                    
-                    echo '<button class="comment-btn"><i class="far fa-comment"></i> Komentuj</button>';
-                    echo '<button class="share-btn"><i class="far fa-share-square"></i> Udostępnij</button>';
-                    echo '</div></div>';
-                    echo '<div class="comments-section">';
-                    echo '<div class="comments-container">';
-                    // Wczytanie komentarzy do postu
-                    $postId = $post['id'];
-                    $commentsSql = "SELECT * FROM posts_comments WHERE post_id = $postId ORDER BY creation_date DESC";
-                    $comments = $conn->query($commentsSql);
-                    if ($comments->num_rows > 0) {
-                        while ($comment = $comments->fetch_assoc()) {
-
-                            // Zapytanie o autora komentarza
-                            $commentAuthorSql = "SELECT * FROM users WHERE id = ?";
-                            $stmt = $conn->prepare($commentAuthorSql);
-                            $stmt->bind_param("i", $comment['comment_author_id']);
-                            $stmt->execute();
-                            $commentAuthorResult = $stmt->get_result();
-                            $commentAuthor = $commentAuthorResult->fetch_assoc();
-                            $stmt->close();
-
-
-                            echo '<div class="comment">';
-                            echo '<img src="' . $commentAuthor['avatar'] . '" alt="Avatar komentującego">';
-                            echo '<div class="comment-content">';
-                            echo '<h5>' . $commentAuthor['login'] . '</h5>';
-                            echo '<p>' . $comment['content'] . '</p>';
-                            echo '<div class="comment-actions">';
-                            echo '<span class="comment-time">' . $comment['creation_date'] . '</span>';
-                            echo '<button class="comment-like-btn">Lubię to</button>';
-                            echo '<button class="comment-reply-btn">Odpowiedz</button>';
-                            echo '</div></div></div>';
-                        }
-                    }
-                    echo '</div>'; // comments-container
-                    echo '<div class="add-comment">';
-                    echo '<img src="'. $_SESSION['user_avatar'] .'" alt="Twój avatar">';
-                    echo '<input type="text" placeholder="Napisz komentarz...">';
-                    echo '<button class="submit-comment-btn"><i class="fas fa-paper-plane"></i></button>';
-                    echo '</div>'; // add-comment
-                    echo '</div>'; // comments-section
-                    echo '</div>'; // post-card
-                }
-            } else {
-                echo '<p>Brak postów do wyświetlenia.</p>';
-            }
-            // Zamknięcie połączenia z bazą danych
-            $conn->close();
-
-            ?>
+            
 
             <!-- Post 1 -->
             <!-- <div class="post-card" data-post-id="1">
