@@ -1,28 +1,12 @@
 <?php
-// Wczytanie konfiguracji JSON
-include '../../page-container/json-config-load.php';
-
-// Ten skrypt obsługuje funkcjonalność filtrowania postów na stronie społecznościowej.
-header('Content-Type: application/json');
-
-// Rozpoczęcie sesji jeśli jeszcze nie została rozpoczęta
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-// Sprawdź czy użytkownik jest zalogowany
-if (!isset($_SESSION['user_id'])) {
-    echo json_encode(['status' => 'error', 'message' => 'Użytkownik nie jest zalogowany']);
-    exit;
-}
+// Wczytanie bazy danych i konfiguracji oraz sprawdzenie sesji i zalogowania
+require_once 'script_template.php'; // Wczytaj szablon skryptu
 
 // Sprawdź czy wymagane dane są dostępne
 if (!isset($_POST['criterion'])) {
     echo json_encode(['status' => 'error', 'message' => 'Brak wymaganych danych']);
     exit;
 }
-
-require_once '../../page-container/db.php';
 
 try {
     $criterion = $_POST['criterion'];
@@ -86,12 +70,13 @@ try {
                                     posts.owner_user_id IN (SELECT reciver_user_id FROM friend_requests WHERE sender_user_id = ? AND status = 'accepted')
                                 )
                         )
+                        OR (posts.access_level = 'friends' AND posts.owner_user_id = ?)
                     ORDER BY 
                         like_count DESC,
                         comment_count DESC,
                         posts.creation_date DESC;";
             $stmt = $conn->prepare($query);
-            $stmt->bind_param('iii', $userId, $userId, $userId);
+            $stmt->bind_param('iiii', $userId, $userId, $userId, $userId);
             break;
 
         case "all":
@@ -118,10 +103,11 @@ try {
                                     posts.owner_user_id IN (SELECT reciver_user_id FROM friend_requests WHERE sender_user_id = ? AND status = 'accepted')
                                 )
                         )
+                        OR (posts.access_level = 'friends' AND posts.owner_user_id = ?)
                     ORDER BY 
                         posts.creation_date DESC;";
             $stmt = $conn->prepare($query);
-            $stmt->bind_param('iii', $userId, $userId, $userId);
+            $stmt->bind_param('iiii', $userId, $userId, $userId, $userId);
             break;
     }
     $stmt->execute();
@@ -140,13 +126,17 @@ try {
         $likeStmt->close();
 
         // Pobierz komentarze do posta
-        $commentsQuery = "SELECT posts_comments.*, users.login AS commenter_login, users.avatar AS commenter_avatar 
+        $commentsQuery = "SELECT posts_comments.*, users.login AS commenter_login, users.avatar AS commenter_avatar ,
+                            (SELECT COUNT(*) FROM posts_comments_likes WHERE post_comment_id = posts_comments.id) AS like_count, 
+                            (SELECT COUNT(*) FROM posts_comments_likes WHERE post_comment_id = posts_comments.id AND user_id = ?) AS is_liked_by_current_user
                  FROM posts_comments 
-                 JOIN users ON users.id = posts_comments.comment_author_id 
+                 LEFT JOIN posts_comments_likes ON posts_comments.id = posts_comments_likes.post_comment_id
+                 LEFT JOIN users ON users.id = posts_comments.comment_author_id 
                  WHERE post_id = ? 
+                 GROUP BY posts_comments.id
                  ORDER BY creation_date DESC;";
         $commentsStmt = $conn->prepare($commentsQuery);
-        $commentsStmt->bind_param('i', $post['id']);
+        $commentsStmt->bind_param('ii', $userId, $post['id']);
         $commentsStmt->execute();
         $commentsResult = $commentsStmt->get_result();
         $comments = [];

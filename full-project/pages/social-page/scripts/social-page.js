@@ -26,19 +26,31 @@ function initializePostAddition() {
         addPostButton.addEventListener('click', function () {
             const title = ""/*document.getElementById('post-title').value.trim()*/;
             const content = document.getElementById('post-content').value.trim();
-            const accessLevel = "public" /*document.querySelector('input[name="access-level"]:checked').value*/;
-            const isCommentable = true /*document.getElementById('is-commentable').checked*/;
+            const accessLevelf = document.getElementById('new-post-access-level');
+            console.log(accessLevelf);
+            const accessLevel = accessLevelf.value;
+            const isCommentable = document.getElementById('post-commentable').checked;
 
             if (content === "") {
                 showNotification('Treść posta nie może być pusta', 'error');
                 return;
             };
 
-            // Dodaj post do interfejsu
-            addPostToUI(title, content, accessLevel, isCommentable);
-
             // Wyślij post do serwera
             submitPost(title, content, accessLevel, isCommentable);
+            console.log(`Dodano post: ${title}, ${content}, ${accessLevel}, ${isCommentable}`);
+
+            // // Dodaj post do interfejsu
+            // addPostToUI(title, content, accessLevel, isCommentable);
+
+            filterPosts("recent"); // Odświeżenie postów po dodaniu nowego
+            // Ustawienie filtra na "najnowsze"
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            const recentFilter = document.querySelector('.filter-btn[data-filter="recent"]');
+            if (recentFilter) {
+                recentFilter.classList.add('active');
+            }
 
             // Wyczyść pola
             //document.getElementById('post-title').value = '';
@@ -83,7 +95,7 @@ function initializePostInteractions() {
 
             console.log(`postId: ${postId}, isLiked: ${!isLiked}`);
             // Symulacja wysłania danych do serwera
-            updateLikeStatus(postId, !isLiked);
+            updatePostLikeStatus(postId, !isLiked);
         });
     });
 
@@ -120,6 +132,13 @@ function initializePostInteractions() {
     // Obsługa przycisków edytowania komentarzy
     const commentEditButtons = document.querySelectorAll('.comment-edit-btn');
     commentEditButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const comment = this.closest('.comment');
+            const commentId = comment.dataset.commentId; // Zakładamy, że ID komentarza jest w atrybucie data-comment-id
+
+            // Wywołaj funkcję edytującą komentarz
+            editCommentProcedure(commentId);
+        });
     });
 
     // Obsługa przycisków usuwania komentarzy
@@ -186,8 +205,37 @@ function initializePostInteractions() {
     const commentLikeButtons = document.querySelectorAll('.comment-like-btn');
     commentLikeButtons.forEach(button => {
         button.addEventListener('click', function () {
-            this.classList.toggle('active');
-            this.style.color = this.classList.contains('active') ? 'var(--primary-color)' : '';
+
+            const isLiked = this.dataset.liked === 'true';
+            const likeCountElement = this.querySelector('.likes-count');
+            console.log(likeCountElement + " " + likeCountElement.textContent);
+            let likeCount = parseInt(likeCountElement.textContent) || 0;
+
+            // Zmień stan przycisku
+            if (isLiked) {
+                this.dataset.liked = 'false';
+                likeCount--;
+
+                this.innerHTML = '<i class="far fa-thumbs-up"></i> <span class="likes-count">'
+                +likeCount+
+                ' </span>Lubię to';
+
+                this.classList.remove('active');
+            } else {
+                this.dataset.liked = 'true';
+                likeCount++;
+
+                this.innerHTML = '<i class="fas fa-thumbs-up"></i> <span class="likes-count">'
+                +likeCount+
+                ' </span>Lubię to';
+
+                this.classList.add('active');
+            }
+
+            if (likeCount == 0) this.innerHTML = '<i class="fas fa-thumbs-up"></i> <span class="likes-count"></span>Lubię to';
+
+            console.log('isLiked: ' + this.classList.contains('active'));
+            updateCommentLikeStatus(this.closest('.comment').dataset.commentId, this.classList.contains('active'));
         });
     });
 
@@ -320,7 +368,7 @@ function submitPost(title, content, accessLevel, isCommentable) {
  * @param {number} postId - ID postu
  * @param {boolean} isLiked - Status lajka
  */
-function updateLikeStatus(postId, isLiked) {
+function updatePostLikeStatus(postId, isLiked) {
     console.log(`Wysyłanie aktualizacji lajka dla postu ${postId}: ${isLiked}`);
 
     var xmlhttp = new XMLHttpRequest();
@@ -330,11 +378,33 @@ function updateLikeStatus(postId, isLiked) {
         }
     }
 
-    xmlhttp.open("POST", "../../api/social-page/like.php", true);
+    xmlhttp.open("POST", "../../api/social-page/like_post.php", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
     console.log(`postId: ${postId}, isLiked: ${isLiked}`);
     xmlhttp.send("postId=" + encodeURIComponent(postId) + "&isLiked=" + encodeURIComponent(isLiked));
+}
+
+/**
+ * Aktualizuje status lajka na serwerze
+ * @param {number} commentId - ID komentarza
+ * @param {boolean} isLiked - Status lajka
+ */
+function updateCommentLikeStatus(commentId, isLiked) {
+    console.log(`Wysyłanie aktualizacji lajka dla komentarza ${commentId}: ${isLiked}`);
+
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log('Odpowiedź serwera:', this.responseText);
+        }
+    }
+
+    xmlhttp.open("POST", "../../api/social-page/like_comment.php", true);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+    console.log(`commentId: ${commentId}, isLiked: ${isLiked}`);
+    xmlhttp.send("commentId=" + encodeURIComponent(commentId) + "&isLiked=" + encodeURIComponent(isLiked));
 }
 
 /**
@@ -369,7 +439,14 @@ function deleteComment(commentId) {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            console.log('Odpowiedź serwera:', this.responseText);
+            console.log('Odpowiedź serwera:', this.response);
+            let result = JSON.parse(this.response);
+            if (result.status === "success") {
+                showNotification('Komentarz został usunięty', 'success');
+            }
+            else {
+                showNotification('Nie udało się usunąć komentarza', 'error');
+            }
         }
     }
 
@@ -379,6 +456,160 @@ function deleteComment(commentId) {
     console.log(`commentId: ${commentId}`);
     xmlhttp.send("commentId=" + encodeURIComponent(commentId));
 }
+
+/**
+ * Edytuje komentarz na serwerze
+ * @param {number} commentId - ID komentarza
+ * @param {string} newContent - Nowa treść komentarza
+ * */
+function updateComment(commentId, newContent) {
+    console.log(`Edycja komentarza o ID: ${commentId}, nowa treść: ${newContent}`);
+
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log('Odpowiedź serwera:', this.responseText);
+        }
+    }
+
+    xmlhttp.open("POST", "../../api/social-page/edit_comment.php", true);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+    console.log(`commentId: ${commentId}, newContent: ${newContent}`);
+    xmlhttp.send("commentId=" + encodeURIComponent(commentId) + "&newContent=" + encodeURIComponent(newContent));
+}
+
+/**
+ *  Procedura edytowania komentarza
+ * @param {number} commentId - ID komentarza
+ */
+function editCommentProcedure(commentId) {
+    const comment = document.querySelector(`.comment[data-comment-id="${commentId}"]`);
+    const commentContent = comment.querySelector('.comment-content p');
+    const originalText = commentContent.textContent;
+
+    // Zamień tekst na pole edycji z przyciskami zapisz i anuluj
+    commentContent.innerHTML = `
+        <input type="text" value="${originalText}">
+        <div class="edit-buttons">
+            <button class="save-comment-btn">Zapisz</button>
+            <button class="cancel-comment-btn">Anuluj</button>
+        </div>
+    `;
+
+    // Obsługa przycisku zapisz
+    const saveButton = comment.querySelector('.save-comment-btn');
+    saveButton.addEventListener('click', function () {
+        const newContent = comment.querySelector('input').value.trim();
+        if (newContent) {
+            updateComment(commentId, newContent);
+            commentContent.innerHTML = newContent;
+        } else {
+            showNotification('Treść komentarza nie może być pusta', 'error');
+        }
+    });
+
+    // Obsługa przycisku anuluj
+    const cancelButton = comment.querySelector('.cancel-comment-btn');
+    cancelButton.addEventListener('click', function () {
+        commentContent.innerHTML = originalText;
+    });
+}
+
+/**
+ * Procedura edytowania posta
+ * @param {number} postId - ID posta
+ */
+function editPostProcedure(postId) {
+    const postCard = document.querySelector(`.post-card[data-post-id="${postId}"]`);
+    const postContent = postCard.querySelector('.post-content p');
+    const originalText = postContent.innerHTML;
+
+    // Zamień tekst na pole edycji z przyciskami zapisz i anuluj
+    postContent.innerHTML = `
+        <textarea style="width: 100%; min-height: 100px; padding: 8px; margin-bottom: 8px; border: 1px solid #ddd; border-radius: 4px;">${originalText}</textarea>
+        <div class="edit-buttons">
+            <button class="save-post-btn">Zapisz</button>
+            <button class="cancel-post-btn">Anuluj</button>
+        </div>
+    `;
+
+    // Obsługa przycisku zapisz
+    const saveButton = postCard.querySelector('.save-post-btn');
+    saveButton.addEventListener('click', function () {
+        const newContent = postCard.querySelector('textarea').value.trim();
+        if (newContent) {
+            updatePost(postId, newContent);
+            postContent.innerHTML = newContent;
+        } else {
+            showNotification('Treść posta nie może być pusta', 'error');
+        }
+    });
+
+    // Obsługa przycisku anuluj
+    const cancelButton = postCard.querySelector('.cancel-post-btn');
+    cancelButton.addEventListener('click', function () {
+        postContent.innerHTML = originalText;
+    });
+}
+
+/**
+ * Aktualizuje post na serwerze
+ * @param {number} postId - ID posta
+ * @param {string} newContent - Nowa treść posta
+  */
+function updatePost(postId, newContent) {
+    console.log(`Edycja posta o ID: ${postId}, nowa treść: ${newContent}`);
+
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log('Odpowiedź serwera:', this.responseText);
+            let result = JSON.parse(this.responseText);
+            if (result.status === "success") {
+                showNotification('Post został zaktualizowany', 'success');
+            }
+            else {
+                showNotification('Nie udało się zaktualizować posta', 'error');
+            }
+        }
+    }
+
+    xmlhttp.open("POST", "../../api/social-page/edit_post.php", true);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+    console.log(`postId: ${postId}, newContent: ${newContent}`);
+    xmlhttp.send("postId=" + encodeURIComponent(postId) + "&newContent=" + encodeURIComponent(newContent));
+}
+
+/**
+ * Usuwa post z serwera
+ * @param {number} postId - ID postu
+ */
+function deletePost(postId) {
+    console.log(`Usuwanie postu o ID: ${postId}`);
+
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log('Odpowiedź serwera:', this.responseText);
+            let result = JSON.parse(this.responseText);
+            if (result.status === "success") {
+                showNotification('Post został usunięty', 'success');
+            }
+            else {
+                showNotification('Nie udało się usunąć posta', 'error');
+            }
+        }
+    }
+
+    xmlhttp.open("POST", "../../api/social-page/delete_post.php", true);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+    console.log(`postId: ${postId}`);
+    xmlhttp.send("postId=" + encodeURIComponent(postId));
+}
+
 
 /**
  * Pokazuje menu opcji postu
@@ -397,9 +628,12 @@ function showPostMenu(element, postId) {
     menu.className = 'post-options-menu';
     menu.innerHTML = `
         <ul>
-            <li data-action="save">Zapisz post</li>
-            <li data-action="report">Zgłoś post</li>
-            <li data-action="hide">Ukryj post</li>
+            <li data-action="save"><i class="fas fa-bookmark"></i> Zapisz post</li>
+            <li data-action="report"><i class="fas fa-flag"></i> Zgłoś post</li>
+            <li data-action="hide"><i class="fas fa-eye-slash"></i> Ukryj post</li>
+            <li data-action="edit"><i class="fas fa-edit"></i> Edytuj post</li>
+            <li data-action="privileges"><i class="fas fa-lock"></i> Zmień uprawnienia</li>
+            <li data-action="delete"><i class="fas fa-trash-alt"></i> Usuń post</li>
         </ul>
     `;
 
@@ -477,6 +711,24 @@ function handlePostAction(postId, action) {
             if (postElement) {
                 postElement.style.display = 'none';
                 showNotification('Post został ukryty', 'success');
+            }
+            break;
+        case 'edit':
+            // Edytuj post - procedura
+            editPostProcedure(postId);
+            showNotification('Edycja posta', 'info');
+            break;
+        case 'privileges':
+            // Zmień uprawnienia (w prawdziwej implementacji otworzyłby się formularz zmiany uprawnień)
+            showNotification('Zmiana uprawnień posta', 'info');
+            break;
+        case 'delete':
+            // Usuń post z serwera
+            deletePost(postId);
+            // Usuń post z interfejsu
+            const postToDelete = document.querySelector(`.post-card[data-post-id="${postId}"]`);
+            if (postToDelete) {
+                postToDelete.remove();
             }
             break;
     }
@@ -591,29 +843,35 @@ function loadPosts(criterion = "all") {
                 var commentsHTML = '';
                 for (let comment of comments) {
                     commentsHTML += `
-                        <div class="comment">
+                        <div class="comment" data-comment-id="${comment.id}">
                             <img src="${comment.commenter_avatar}" alt="Avatar użytkownika">
                             <div class="comment-content">
                                 <h5>${comment.commenter_login}</h5>
                                 <p>${comment.content}</p>
                                 <div class="comment-actions">
                                     <span class="comment-time">${comment.creation_date}</span>
-                                    <button class="comment-like-btn"><i class="far fa-thumbs-up"></i> Lubię to</button>
-                                    <button class="comment-reply-btn">Odpowiedz</button>
-                                    <button class="comment-edit-btn"><i class="fas fa-edit"></i> Edytuj</button>
-                                    <button class="comment-delete-btn"><i class="fas fa-trash"></i> Usuń</button>
+                                    <button class="comment-like-btn${comment.is_liked_by_current_user ? " active" : ""}" data-liked="${comment.is_liked_by_current_user ? "true" : "false"}"><i class="${comment.is_liked_by_current_user ? "fas": "far"} fa-thumbs-up"></i> <span class="likes-count">${comment.like_count > 0 ? comment.like_count + " " : ""}</span>Lubię to</button>
+                                    <button class="comment-reply-btn"><i class="fas fa-reply"></i> Odpowiedz</button>
+                                    ${ current_user.id == comment.comment_author_id ?
+                                    `<button class="comment-edit-btn"><i class="fas fa-edit"></i> Edytuj</button>
+                                    <button class="comment-delete-btn"><i class="fas fa-trash"></i> Usuń</button>` : ``}
                                 </div>
                             </div>
                         </div>`;
+                        console.log(current_user.id + " " + comment.comment_author_id);
                 }
 
-
+                if(post.is_commentable) {
                 postCard.innerHTML = `
-        <div class="post-header">
+        <div class="post-header" data-post-id="${post.id}">
             <div class="post-author">
                 <img src="${post.author_avatar}" alt="Avatar użytkownika">
                 <div class="author-info">
                     <h4>${post.author_login}</h4>
+                    <span class="privacy-status">
+                    <i class="${post.access_level === 'public' ? 'fas fa-globe' : (post.access_level === 'friends' ? 'fas fa-users' : 'fas fa-lock')}"></i>
+                    ${post.access_level === 'public' ? 'Publiczny' : (post.access_level === 'friends' ? 'Znajomi' : 'Prywatny')}
+                    </span>
                     <span class="post-time">${post.creation_date}</span>
                 </div>
             </div>
@@ -652,6 +910,37 @@ function loadPosts(criterion = "all") {
                      </div>`
 
                     ;
+                } 
+                else {
+                    postCard.innerHTML = `
+                <div class="post-header" data-post-id="${post.id}">
+                    <div class="post-author">
+                        <img src="${post.author_avatar}" alt="Avatar użytkownika">
+                        <div class="author-info">
+                            <h4>${post.author_login}</h4>
+                            <span class="privacy-status">
+                            <i class="${post.access_level === 'public' ? 'fas fa-globe' : (post.access_level === 'friends' ? 'fas fa-users' : 'fas fa-lock')}"></i>
+                            ${post.access_level === 'public' ? 'Publiczny' : (post.access_level === 'friends' ? 'Znajomi' : 'Prywatny')}
+                            </span>
+                            <span class="post-time">${post.creation_date}</span>
+                        </div>
+                    </div>
+                    <div class="post-options"><i class="fas fa-ellipsis-h"></i></div>
+                </div>
+                <div class="post-content"><p>${post.content}</p></div>
+                <div class="post-interactions">
+                    <div class="interaction-stats">
+                        <span class="likes-count"><i class="fas fa-thumbs-up"></i> <span>${post.like_count}</span></span>
+                    </div>
+                    <div class="interaction-buttons">
+                        ${is_liked_by_current_user ?
+                                '<button class="like-btn like-btn-currently-liked" data-liked="true"><i class="fas fa-thumbs-up"></i> Lubię to</button>' :
+                                '<button class="like-btn" data-liked="false"><i class="far fa-thumbs-up"></i> Lubię to</button>'
+                            }
+                        <button class="share-btn"><i class="far fa-share-square"></i> Udostępnij</button>
+                    </div>
+                </div>`;
+                }
 
                 // Dodaj post do kontenera
                 postsContainer.appendChild(postCard);

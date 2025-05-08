@@ -45,6 +45,18 @@ if (!isset($_SESSION['user_id'])) {
                         <button class="attachment-btn"><i class="fas fa-video"></i> Film</button>
                         <button class="attachment-btn"><i class="fas fa-link"></i> Link</button>
                     </div>
+                    <div class="post-privacy">
+                        <label>Prywatność:</label>
+                        <select id="new-post-access-level" class="privacy-select">
+                            <option value="public">Publiczny</option>
+                            <option value="friends">Znajomi</option>
+                            <option value="private">Prywatny</option>
+                        </select>
+                    </div>
+                    <div class="post-commentable">
+                        <label for="post-commentable">Czy komentowalny:</label>
+                        <input type="checkbox" id="post-commentable" class="commentable-checkbox" checked>
+                    </div>
                     <button id="add-post-btn" class="publish-btn">Opublikuj</button>
                 </div>
             </div>

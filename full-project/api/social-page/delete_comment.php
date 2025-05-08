@@ -3,14 +3,13 @@
 require_once 'script_template.php'; // Wczytaj szablon skryptu
 
 // Sprawdź czy wymagane dane są dostępne
-if (!isset($_POST['postId']) || !isset($_POST['commentText'])) {
+if (!isset($_POST['commentId'])) {
     echo json_encode(['status' => 'error', 'message' => 'Brak wymaganych danych']);
     exit;
 }
 
 try {
-    $postId = $_POST['postId'];
-    $commentText = $_POST['commentText'];
+    $commentId = $_POST['commentId'];
     $userId = $_SESSION['user_id'];
 
     $conn = connect_db($config); // Połącz z bazą danych
@@ -18,19 +17,25 @@ try {
         throw new Exception('Połączenie z bazą danych nie powiodło się');
     }
 
-    // Sprawdź czy polubienie już istnieje
-    $query = "INSERT INTO posts_comments (post_id, comment_author_id, content) VALUES (?, ?, ?)";
+    // Sprawdź czy komentarz należy do użytkownika
+    $query = "DELETE FROM posts_comments WHERE id = ? AND comment_author_id = ?";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param('iis', $postId, $userId, $commentText);
+    $stmt->bind_param('ii', $commentId, $userId);
     
     $stmt->execute();
     $result = $stmt->get_result();
 
+    if ($stmt->affected_rows > 0) {
+        echo json_encode(['status' => 'success', 'message' => 'Komentarz został usunięty']);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Nie można usunąć komentarza']);
+    }
+
     $stmt->close();
     close_db(); // Zamknij połączenie z bazą danych
 
-    echo json_encode(['status' => 'success', 'message' => 'Komentarz został dodany']);
 } catch (Exception $e) {
     echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
 }
+
 ?>

@@ -154,9 +154,14 @@
     font-size: 1rem;
 }
 
-.post-time {
+.post-time, .privacy-status {
     font-size: 0.8rem;
     color: #999;
+}
+
+.privacy-status {
+    align-items: center;
+    color: var(--primary-color);
 }
 
 .post-options {
@@ -233,6 +238,10 @@
     color: var(--primary-color);
 }
 
+button.active{
+    color: var(--primary-color);
+}
+
 /* Sekcja komentarzy */
 .comments-section {
     padding: 15px;
@@ -289,7 +298,7 @@
     color: #999;
 }
 
-.comment-like-btn, .comment-reply-btn {
+.comment-like-btn, .comment-reply-btn, .comment-edit-btn, .comment-delete-btn {
     background: none;
     border: none;
     color: #666;
@@ -298,7 +307,7 @@
     padding: 0;
 }
 
-.comment-like-btn:hover, .comment-reply-btn:hover {
+.comment-like-btn:hover, .comment-reply-btn:hover, .comment-edit-btn:hover, .comment-delete-btn:hover {
     color: var(--primary-color);
     text-decoration: underline;
 }
