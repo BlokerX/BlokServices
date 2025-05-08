@@ -19,7 +19,7 @@ try{
     }
 
     // Sprawdź czy post należy do użytkownika
-    $query = "UPDATE posts SET content = ? WHERE id = ? AND owner_user_id = ?";
+    $query = "UPDATE posts SET content = ?, last_modification_date= CURRENT_TIMESTAMP() WHERE id = ? AND owner_user_id = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param('sii', $newContent, $postId, $userId);
     

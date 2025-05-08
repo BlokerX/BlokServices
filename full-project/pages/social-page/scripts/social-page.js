@@ -544,6 +544,7 @@ function editPostProcedure(postId) {
         } else {
             showNotification('Treść posta nie może być pusta', 'error');
         }
+        filterPosts("recent"); // Odświeżenie postów po edytowaniu
     });
 
     // Obsługa przycisku anuluj
@@ -872,7 +873,7 @@ function loadPosts(criterion = "all") {
                     <i class="${post.access_level === 'public' ? 'fas fa-globe' : (post.access_level === 'friends' ? 'fas fa-users' : 'fas fa-lock')}"></i>
                     ${post.access_level === 'public' ? 'Publiczny' : (post.access_level === 'friends' ? 'Znajomi' : 'Prywatny')}
                     </span>
-                    <span class="post-time">${post.creation_date}</span>
+                    <span class="post-time">${post.last_modification_date}</span>
                 </div>
             </div>
             <div class="post-options"><i class="fas fa-ellipsis-h"></i></div>
@@ -922,7 +923,7 @@ function loadPosts(criterion = "all") {
                             <i class="${post.access_level === 'public' ? 'fas fa-globe' : (post.access_level === 'friends' ? 'fas fa-users' : 'fas fa-lock')}"></i>
                             ${post.access_level === 'public' ? 'Publiczny' : (post.access_level === 'friends' ? 'Znajomi' : 'Prywatny')}
                             </span>
-                            <span class="post-time">${post.creation_date}</span>
+                            <span class="post-time">${post.last_modification_date}</span>
                         </div>
                     </div>
                     <div class="post-options"><i class="fas fa-ellipsis-h"></i></div>
