@@ -47,6 +47,7 @@
                 <div class="app-actions">
                     <button class="add-to-desktop"><i class="fas fa-plus"></i> Dodaj do pulpitu</button>
                     <button class="launch-app"><i class="fas fa-play"></i> Uruchom</button>
+                </div>
             </div>
 
             <div class="app-card">

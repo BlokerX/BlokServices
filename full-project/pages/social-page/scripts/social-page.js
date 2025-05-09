@@ -174,6 +174,9 @@ function initializePostInteractions() {
 
                 // Wyczyść pole
                 commentInput.value = '';
+
+                // Przeładuj posty
+                filterPosts("recent"); // Odświeżenie postów po dodaniu nowego
             }
         });
     });
