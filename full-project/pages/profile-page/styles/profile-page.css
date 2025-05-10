@@ -1,0 +1,295 @@
+/* Style dla strony profilowej */
+
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: 30px;
+    box-shadow: var(--shadow);
+}
+
+.profile-avatar-container {
+    flex-shrink: 0;
+}
+
+.profile-user-info {
+    flex-grow: 1;
+}
+
+.profile-user-info h1 {
+    font-size: 2.2rem;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.profile-user-info .user-status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    background-color: var(--primary-color);
+    color: white;
+    margin-bottom: 15px;
+}
+
+.admin-status {
+    background-color: var(--accent-color);
+}
+
+.profile-details {
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: 30px;
+    box-shadow: var(--shadow);
+}
+
+/* Dark mode styles */
+[data-theme="dark"] .profile-header,
+[data-theme="dark"] .profile-details {
+    background-color: var(--dark-bg);
+    color: var(--dark-text);
+}
+
+[data-theme="dark"] .profile-user-info h1 {
+    color: var(--dark-primary);
+}
+
+[data-theme="dark"] .profile-section h2 {
+    color: var(--dark-primary);
+    border-bottom-color: var(--dark-border);
+}
+
+[data-theme="dark"] .profile-section .description,
+[data-theme="dark"] .profile-info-item {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .profile-info-item .label {
+    color: var(--dark-neutral);
+}
+
+/* Rest of the original styles */
+.profile-section {
+    margin-bottom: 25px;
+}
+
+.profile-section:last-child {
+    margin-bottom: 0;
+}
+
+.profile-section h2 {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.profile-section .description {
+    background-color: rgba(0, 0, 0, 0.02);
+    padding: 15px;
+    border-radius: var(--border-radius);
+    border-left: 4px solid var(--secondary-color);
+    margin-bottom: 15px;
+}
+
+.profile-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.profile-info-item {
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(0, 0, 0, 0.02);
+    padding: 15px;
+    border-radius: var(--border-radius);
+}
+
+.profile-info-item .label {
+    font-size: 0.9rem;
+    color: var(--neutral-color);
+    margin-bottom: 5px;
+}
+
+.profile-info-item .value {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.profile-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.profile-actions button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.modify-button {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.modify-button:hover {
+    background-color: #8d5cd6;
+    transform: translateY(-2px);
+}
+
+.delete-button {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.delete-button:hover {
+    background-color: #ff5252;
+    transform: translateY(-2px);
+}
+
+.add-friend-button {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.add-friend-button:hover {
+    background-color: #3a5be0;
+    transform: translateY(-2px);
+}
+
+/* Responsywność */
+@media (max-width: 768px) {
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .profile-actions {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 576px) {
+    .profile-info-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+
+/*<style>*/
+
+/* User posts section styles
+.user-posts-section {
+    max-width: 800px;
+    margin: 2rem auto;
+}
+
+.post {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.post-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 1rem;
+}
+
+.post-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.post-author {
+    font-weight: bold;
+    color: #333;
+}
+
+.post-date {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.post-content {
+    margin: 1rem 0;
+}
+
+.post-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.post-text {
+    color: #444;
+    line-height: 1.5;
+}
+
+.post-footer {
+    border-top: 1px solid #eee;
+    padding-top: 1rem;
+    margin-top: 1rem;
+}
+
+.post-actions button {
+    background: none;
+    border: none;
+    color: #666;
+    padding: 0.5rem 1rem;
+    margin-right: 1rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.post-actions button:hover {
+    color: #007bff;
+}
+
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+}
+
+.page-btn {
+    padding: 0.5rem 1rem;
+    background: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.page-btn:hover {
+    background: #0056b3;
+}
+*/

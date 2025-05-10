@@ -62,6 +62,7 @@ if (mysqli_num_rows($result) > 0) {
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['user_name'] = $user['login'];
     $_SESSION['user_avatar'] = $user['avatar'];
+    $_SESSION['user_is_admin'] = $user['is_admin'];
 
     // Zaktualizuj datę ostatniego logowania
     $update_query = "UPDATE users SET last_login_date = NOW() WHERE id = " . $user['id'];

@@ -476,3 +476,70 @@
         flex: 1;
     }
 }
+
+/* Dark theme styles */
+[data-theme="dark"] {
+    /* Header section */
+    .games-header h2 {
+        color: var(--primary-color-dark, #fff);
+    }
+
+    /* Search and controls */
+    .search-games input,
+    .games-filters select,
+    .view-toggle {
+        background-color: var(--background-dark, #2a2a2a);
+        border-color: #444;
+        color: #fff;
+    }
+
+    /* Featured games section */
+    .featured-carousel,
+    .game-card {
+        background-color: var(--background-dark, #2a2a2a);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .featured-game-info h4,
+    .game-info h4 {
+        color: #fff;
+    }
+
+    .rating-value,
+    .game-meta {
+        color: #aaa;
+    }
+
+    /* Pagination */
+    .page-prev,
+    .page-next,
+    .page-number {
+        background-color: var(--background-dark, #2a2a2a);
+        border-color: #444;
+        color: #fff;
+    }
+
+    /* Player lists */
+    .player-list li,
+    .trending-list li,
+    .achievement-list li {
+        border-bottom-color: #444;
+    }
+
+    .player-name,
+    .trending-name,
+    .achievement-name {
+        color: #fff;
+    }
+
+    .player-score,
+    .achievement-game,
+    .trending-stats {
+        color: #aaa;
+    }
+
+    .favorite-btn {
+        background-color: #444;
+        color: #fff;
+    }
+}

@@ -520,3 +520,68 @@ button.active{
         margin-top: 5px;
     }
 }
+
+/* Tryb ciemny */
+[data-theme="dark"] {
+    /* Tło i kolory sekcji */
+    .create-post-section,
+    .feed-filter,
+    .post-card,
+    .suggestion-card,
+    .event-card {
+        background-color: #1f1f1f;
+    }
+
+    /* Inputy i teksty */
+    .post-form textarea,
+    .add-comment input {
+        background-color: #2d2d2d;
+        border-color: #404040;
+        color: #e0e0e0;
+    }
+
+    /* Przyciski i interakcje */
+    .attachment-btn:hover,
+    .filter-btn:hover,
+    .like-btn:hover,
+    .comment-btn:hover,
+    .share-btn:hover {
+        background-color: #2d2d2d;
+    }
+
+    /* Komentarze */
+    .comments-section {
+        background-color: #1a1a1a;
+    }
+
+    .comment-content {
+        background-color: #2d2d2d;
+    }
+
+    /* Teksty */
+    .post-content p,
+    .author-info h4,
+    .comment-content h5,
+    .comment-content p,
+    .suggestion-info h4,
+    .event-info h4 {
+        color: #e0e0e0;
+    }
+
+    /* Obramowania */
+    .post-header,
+    .post-interactions {
+        border-color: #404040;
+    }
+
+    /* Przyciski */
+    #load-more-btn {
+        background-color: transparent;
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+    }
+
+    #load-more-btn:hover {
+        background-color: rgba(74, 107, 255, 0.15);
+    }
+}
