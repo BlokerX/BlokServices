@@ -89,6 +89,10 @@
             "path": "../profile-page/index.php",
             "title": "Strona profilu"
         },
+        "post-page": {
+            "path": "../post-page/index.php",
+            "title": "Strona posta"
+        },
         "chat-page": {
             "path": "../chat.html",
             "title": "Strona czatu"

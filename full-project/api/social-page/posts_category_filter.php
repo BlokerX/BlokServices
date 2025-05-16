@@ -1,6 +1,6 @@
 <?php
 // Wczytanie bazy danych i konfiguracji oraz sprawdzenie sesji i zalogowania
-require_once 'script_template.php'; // Wczytaj szablon skryptu
+include '../script_template.php'; // Wczytaj szablon skryptu
 
 // Sprawdź czy wymagane dane są dostępne
 if (!isset($_POST['criterion'])) {
@@ -171,3 +171,4 @@ try {
     echo json_encode(['status' => 'error', 'message' => 'Wystąpił błąd: ' . $e->getMessage()]);
     exit;
 }
+?>

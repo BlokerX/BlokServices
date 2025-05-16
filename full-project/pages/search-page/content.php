@@ -71,15 +71,16 @@
             }
 
             // Wyszukaj w postach
-            $query = "SELECT * FROM posts 
+            $query = "SELECT * FROM posts LEFT JOIN users ON posts.owner_user_id = users.id
             WHERE title LIKE '%$search%'
+            OR users.login LIKE '$search'
             OR content LIKE '%$search%'";
 
             $result = mysqli_query($conn, $query);
 
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
-                    echo '<div class="search-results-grid"><a href="'.$config['pages']['social-page']['path'].'?post_id=' . $row['id'] . '">';
+                    echo '<div class="search-results-grid"><a href="'.$config['pages']['post-page']['path'].'?post_id=' . $row['id'] . '">';
                     echo '<h3><i class="fas fa-search"></i> Post: ' . htmlspecialchars($row['title']) . '</h3>';
                     echo '<p>' . htmlspecialchars($row['content']) . '</p>';
                     echo '</a></div>';
@@ -87,13 +88,13 @@
             }
 
             // Wyszukaj w komentarzach
-            $query = "SELECT * FROM posts_comments 
-            WHERE content LIKE '%$search%'";
+            $query = "SELECT * FROM posts_comments LEFT JOIN users ON posts_comments.comment_author_id = users.id
+            WHERE posts_comments.content LIKE '%$search%' OR users.login LIKE '$search'";
             $result = mysqli_query($conn, $query);
 
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
-                    echo '<div class="search-results-grid"><a href="'.$config['pages']['social-page']['path'].'?post_id=' . $row['post_id'] . '">';
+                    echo '<div class="search-results-grid"><a href="'.$config['pages']['post-page']['path'].'?post_id=' . $row['post_id'] . '">';
                     echo '<h3><i class="fas fa-search"></i> Komentarz do posta: ' . htmlspecialchars($row['content']) . '</h3>';
                     echo '<p>' . htmlspecialchars($row['content']) . '</p>';
                     echo '</a></div>';
@@ -109,7 +110,7 @@
 
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
-                    echo '<div class="search-results-grid"><a href="'.$config['pages']['game-page']['path'].'?game_id=' . $row['id'] . '">';
+                    echo '<div class="search-results-grid"><a href="'.$config['pages']['games-page']['path'].'?game_id=' . $row['id'] . '">';
                     echo '<h3><i class="fas fa-search"></i> Gra: ' . htmlspecialchars($row['title']) . '</h3>';
                     echo '<p>' . htmlspecialchars($row['description']) . '</p>';
                     echo '</a></div>';

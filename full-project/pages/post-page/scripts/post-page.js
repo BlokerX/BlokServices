@@ -16,7 +16,7 @@ function initializeSubpage() {
     // Inicjalizacja sugestii znajomych
     initializeFriendSuggestions();
 
-    loadPosts(); // Ładowanie postów na początku
+    loadPost(_postId); // Ładowanie postów na początku
 }
 
 function initializePostAddition() {
@@ -774,7 +774,7 @@ function filterPosts(filterType) {
     const postsContainer = document.querySelector('.posts-container');
     postsContainer.style.opacity = '0.5';
 
-    loadPosts(filterType); // Załaduj posty na podstawie filtra
+    loadPost(filterType); // Załaduj posty na podstawie filtra
 
     postsContainer.style.opacity = '1';
     showNotification(`Załadowano posty: ${filterType}`, 'success');
@@ -807,9 +807,9 @@ function initializeLoadMore() {
 /*
 * Funkcja ładowania postów po kryterium
 */
-function loadPosts(criterion = "all") {
+function loadPost(postId) {
     // Lista postów zostanie załadowana z serwera z pliku posts_category_filter.php:
-    console.log(`Ładowanie postów po kryterium: ${criterion}`);
+    console.log(`Ładowanie postów po id: ${postId}`);
 
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
@@ -825,15 +825,14 @@ function loadPosts(criterion = "all") {
             }
             console.log(result.message);
 
-            let posts = result.posts;
+            let postStructure = result;
             let current_user = result.current_user;
-            console.log("posty: " + posts);
+            console.log("posty: " + postStructure);
 
             const postsContainer = document.querySelector('.posts-container');
             postsContainer.innerHTML = ''; // Wyczyść kontener przed dodaniem nowych postów
 
             // Dla każdego posta
-            for (let postStructure of posts) {
                 let post = postStructure.post;
                 let is_liked_by_current_user = postStructure.is_liked_by_current_user;
                 let comments = postStructure.comments;
@@ -874,15 +873,12 @@ function loadPosts(criterion = "all") {
                         <div class="author-info">
                         <h4>${post.author_login}</h4>
                     </a>
-                    <a class="post-link" href="../post-page/index.php?post_id=${post.id}">    
-                        <span class="privacy-status">
-                        <i class="${post.access_level === 'public' ? 'fas fa-globe' : (post.access_level === 'friends' ? 'fas fa-users' : 'fas fa-lock')}"></i>
-                        ${post.access_level === 'public' ? 'Publiczny' : (post.access_level === 'friends' ? 'Znajomi' : 'Prywatny')}
-                        </span>
-                        <span class="post-time">${post.last_modification_date}</span>
-                    </a>
+                    <span class="privacy-status">
+                    <i class="${post.access_level === 'public' ? 'fas fa-globe' : (post.access_level === 'friends' ? 'fas fa-users' : 'fas fa-lock')}"></i>
+                    ${post.access_level === 'public' ? 'Publiczny' : (post.access_level === 'friends' ? 'Znajomi' : 'Prywatny')}
+                    </span>
+                    <span class="post-time">${post.last_modification_date}</span>
                 </div>
-                </a>
             </div>
             <div class="post-options"><i class="fas fa-ellipsis-h"></i></div>
         </div>
@@ -929,15 +925,12 @@ function loadPosts(criterion = "all") {
                         <div class="author-info">
                         <h4>${post.author_login}</h4>
                     </a>
-                    <a class="post-link" href="../post-page/index.php?post_id=${post.id}">    
-                        <span class="privacy-status">
-                        <i class="${post.access_level === 'public' ? 'fas fa-globe' : (post.access_level === 'friends' ? 'fas fa-users' : 'fas fa-lock')}"></i>
-                        ${post.access_level === 'public' ? 'Publiczny' : (post.access_level === 'friends' ? 'Znajomi' : 'Prywatny')}
-                        </span>
-                        <span class="post-time">${post.last_modification_date}</span>
-                    </a>
+                    <span class="privacy-status">
+                    <i class="${post.access_level === 'public' ? 'fas fa-globe' : (post.access_level === 'friends' ? 'fas fa-users' : 'fas fa-lock')}"></i>
+                    ${post.access_level === 'public' ? 'Publiczny' : (post.access_level === 'friends' ? 'Znajomi' : 'Prywatny')}
+                    </span>
+                    <span class="post-time">${post.last_modification_date}</span>
                 </div>
-                </a>
             </div>
                     <div class="post-options"><i class="fas fa-ellipsis-h"></i></div>
                 </div>
@@ -959,7 +952,6 @@ function loadPosts(criterion = "all") {
                 // Dodaj post do kontenera
                 postsContainer.appendChild(postCard);
 
-            }
             initializePostInteractions(); // Inicjalizacja interakcji z postami (lajki, komentarze) dla wszystkich postów4
 
             // --------------
@@ -969,9 +961,9 @@ function loadPosts(criterion = "all") {
 
         }
     }
-    xmlhttp.open("POST", "../../api/social-page/posts_category_filter.php", true);
+    xmlhttp.open("POST", "../../api/social-page/load_post.php", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlhttp.send("criterion=" + encodeURIComponent(criterion));
+    xmlhttp.send("post_id=" + encodeURIComponent(postId));
 
 }
 

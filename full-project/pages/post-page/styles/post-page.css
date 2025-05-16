@@ -1,4 +1,11 @@
 /* Style specyficzne dla strony społecznościowej */
+div.main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    background-color: var(--background-color);
+}
 
 .post-link {
     text-decoration: none;

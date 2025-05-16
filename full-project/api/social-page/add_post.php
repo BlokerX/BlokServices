@@ -1,6 +1,6 @@
 <?php
 // Wczytanie bazy danych i konfiguracji oraz sprawdzenie sesji i zalogowania
-require_once 'script_template.php'; // Wczytaj szablon skryptu
+include '../script_template.php'; // Wczytaj szablon skryptu
 
 // Sprawdź czy wymagane dane są dostępne
 if (!isset($_POST['title']) || !isset($_POST['content']) || !isset($_POST['accessLevel']) || !isset($_POST['isCommentable'])) {

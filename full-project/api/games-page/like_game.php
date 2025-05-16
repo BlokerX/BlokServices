@@ -3,13 +3,13 @@
 include '../script_template.php'; // Wczytaj szablon skryptu
 
 // Sprawdź czy wymagane dane są dostępne
-if (!isset($_POST['postId']) || !isset($_POST['isLiked'])) {
+if (!isset($_POST['gameId']) || !isset($_POST['isLiked'])) {
     echo json_encode(['status' => 'error', 'message' => 'Brak wymaganych danych']);
     exit;
 }
 
 try {
-    $postId = $_POST['postId'];
+    $gameId = $_POST['gameId'];
     $isLiked = $_POST['isLiked'];
     $userId = $_SESSION['user_id'];
 
@@ -19,9 +19,9 @@ try {
     }
 
     // Sprawdź czy polubienie już istnieje
-    $checkQuery = "SELECT * FROM posts_likes WHERE post_id = ? AND user_id = ?";
+    $checkQuery = "SELECT * FROM games_likes WHERE game_id = ? AND user_id = ?";
     $stmt = $conn->prepare($checkQuery);
-    $stmt->bind_param('ii', $postId, $userId);
+    $stmt->bind_param('ii', $gameId, $userId);
     $stmt->execute();
     $result = $stmt->get_result();
 
@@ -35,17 +35,17 @@ try {
     if ($isLiked === "true") {
         // Dodaj polubienie jeśli nie istnieje
         if ($result->num_rows == 0) {
-            $query = "INSERT INTO posts_likes (post_id, user_id) VALUES (?, ?)";
+            $query = "INSERT INTO games_likes (game_id, user_id) VALUES (?, ?)";
         }
     } else if($isLiked === "false") {
         // Usuń polubienie jeśli istnieje
         if ($result->num_rows > 0) {
-            $query = "DELETE FROM posts_likes WHERE post_id = ? AND user_id = ?";
+            $query = "DELETE FROM games_likes WHERE game_id = ? AND user_id = ?";
         }
     }
 
     $stmt = $conn->prepare($query);
-    $stmt->bind_param('ii', $postId, $userId);
+    $stmt->bind_param('ii', $gameId, $userId);
     
     echo json_encode(['query' => $query]);
 

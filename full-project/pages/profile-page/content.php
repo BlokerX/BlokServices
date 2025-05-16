@@ -173,6 +173,11 @@ $birth_date = new DateTime($user['birth_date']);
                     </button>
                 </div>
             <?php endif; ?>
+            <div class="profile-actions"><button class="search-button" 
+        onclick="window.location.href='<?= htmlspecialchars($config['pages']['search-page']['path'], ENT_QUOTES) ?>?search=<?= urlencode($user['login']) ?>'">
+    <i class="fas fa-search"></i> Wyszukaj w aktywnościach
+</button>
+            </div>
             
         </div>
     </div>
