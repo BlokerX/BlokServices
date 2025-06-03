@@ -94,7 +94,7 @@
             "title": "Strona posta"
         },
         "chat-page": {
-            "path": "../chat.html",
+            "path": "../chat-page/index.php",
             "title": "Strona czatu"
         },
         "settings-page": {
