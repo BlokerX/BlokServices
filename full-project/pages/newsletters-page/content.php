@@ -1,293 +1,119 @@
-    <!-- #region Zawartość podstrony -->
+<?php
+require_once '../../page-container/db.php';
+$conn = connect_db($config);
 
-    <aside class="left-sidebar">
-        <div class="sidebar-header">
-            <h3>Kategorie</h3>
-        </div>
-        <div class="sidebar-content">
-            <ul class="sidebar-menu">
-                <li><a href="#" class="category-link" data-category="all"><i class="fas fa-inbox"></i> Wszystkie wiadomości</a></li>
-                <li><a href="#" class="category-link" data-category="unread"><i class="fas fa-envelope"></i> Nieprzeczytane</a></li>
-                <li><a href="#" class="category-link" data-category="important"><i class="fas fa-star"></i> Ważne</a></li>
-                <hr>
-                <li><a href="#" class="category-link" data-category="announcements"><i class="fas fa-bullhorn"></i> Ogłoszenia</a></li>
-                <li><a href="#" class="category-link" data-category="promotion"><i class="fas fa-tags"></i> Promocje</a></li>
-                <li><a href="#" class="category-link" data-category="updates"><i class="fas fa-sync"></i> Aktualizacje</a></li>
-                <li><a href="#" class="category-link" data-category="social"><i class="fas fa-users"></i> Społeczność</a></li>
-                <hr>
-                <li><a href="#" id="subscribe-button"><i class="fas fa-plus-circle"></i> Subskrybuj nowy</a></li>
-                <li><a href="#" id="manage-button"><i class="fas fa-cog"></i> Zarządzaj subskrypcjami</a></li>
-            </ul>
-        </div>
-    </aside>
+// Sprawdź czy użytkownik jest zalogowany
+if (!isset($_SESSION['user_id'])) {
+    header("Location: " . $config['pages']['login-page']['path']);
+    exit;
+}
 
-    <main>
-        <section class="newsletters-header">
-            <h2>Wiadomości</h2>
-            <div class="newsletters-actions">
-                <button class="refresh-button"><i class="fas fa-sync-alt"></i> Odśwież</button>
-                <div class="view-options">
-                    <button class="view-option active" data-view="cards"><i class="fas fa-th-large"></i></button>
-                    <button class="view-option" data-view="list"><i class="fas fa-list"></i></button>
+$current_user_id = $_SESSION['user_id'];
+
+// Pobieranie artykułów z bazy danych
+$articles_query = "SELECT na.*, u.name AS author_name 
+                   FROM newsletters_articles na
+                   JOIN users u ON na.author_id = u.id
+                   ORDER BY na.creation_date DESC";
+$articles_result = mysqli_query($conn, $articles_query);
+
+// Sprawdzenie błędów zapytania
+if (!$articles_result) {
+    die("Database query failed: " . mysqli_error($conn));
+}
+?>
+
+        <aside class="news-sidebar">
+            <div class="news-header">
+                <i class="fas fa-newspaper"></i>
+                <h2>Nowości</h2>
+            </div>
+            
+            <div class="news-filters">
+                <div class="filter-title">
+                    <i class="fas fa-filter"></i>
+                    Filtruj kategorie
+                </div>
+                <div class="filter-options">
+                    <button class="filter-btn active">Wszystkie</button>
+                    <button class="filter-btn">Aktualności</button>
+                    <button class="filter-btn">Ostrzeżenia</button>
+                    <button class="filter-btn">Oferty</button>
+                    <button class="filter-btn">Promocje</button>
                 </div>
             </div>
-        </section>
-
-        <section class="newsletter-filters">
-            <div class="filter-container">
-                <label for="filter-sort">Sortuj:</label>
-                <select id="filter-sort">
-                    <option value="newest">Najnowsze</option>
-                    <option value="oldest">Najstarsze</option>
-                    <option value="alphabetical">Alfabetycznie</option>
-                </select>
-            </div>
-            <div class="search-newsletters">
-                <input type="text" id="newsletter-search" placeholder="Filtruj wiadomości...">
-                <button class="search-newsletters-btn"><i class="fas fa-search"></i></button>
-            </div>
-        </section>
-
-        <section class="newsletters-content">
-            <div class="newsletters-grid" id="newsletters-container">
-                <!-- Przykładowe newslettery -->
-                <div class="newsletter-item" data-category="announcements">
-                    <div class="newsletter-label important">Ważne</div>
-                    <div class="newsletter-badge unread"></div>
-                    <div class="newsletter-header">
-                        <i class="fas fa-bullhorn newsletter-icon"></i>
-                        <span class="newsletter-date">23.03.2025</span>
-                    </div>
-                    <h3 class="newsletter-title">Aktualizacja regulaminu platformy</h3>
-                    <p class="newsletter-excerpt">Informujemy o wprowadzeniu zmian w regulaminie korzystania z naszej platformy, które wejdą w życie od 1 kwietnia 2025...</p>
-                    <div class="newsletter-footer">
-                        <button class="read-more-btn">Czytaj więcej</button>
-                        <div class="newsletter-actions">
-                            <button class="star-btn"><i class="far fa-star"></i></button>
-                            <button class="save-btn"><i class="far fa-bookmark"></i></button>
+            
+            <div class="popular-articles">
+                <div class="popular-title">
+                    <i class="fas fa-fire"></i>
+                    Popularne artykuły
+                </div>
+                <div class="popular-list">
+                    <div class="popular-item">
+                        <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Popularny artykuł">
+                        <div class="popular-item-content">
+                            <div class="popular-item-title">Nowe funkcje w serwisie</div>
+                            <div class="popular-item-date">10 maja 2025</div>
                         </div>
                     </div>
-                </div>
-
-                <div class="newsletter-item" data-category="updates">
-                    <div class="newsletter-badge unread"></div>
-                    <div class="newsletter-header">
-                        <i class="fas fa-sync newsletter-icon"></i>
-                        <span class="newsletter-date">22.03.2025</span>
-                    </div>
-                    <h3 class="newsletter-title">Nowe funkcje aplikacji</h3>
-                    <p class="newsletter-excerpt">Sprawdź nowe funkcje, które dodaliśmy w ostatniej aktualizacji. Teraz możesz korzystać z zaawansowanych opcji...</p>
-                    <div class="newsletter-footer">
-                        <button class="read-more-btn">Czytaj więcej</button>
-                        <div class="newsletter-actions">
-                            <button class="star-btn"><i class="far fa-star"></i></button>
-                            <button class="save-btn"><i class="far fa-bookmark"></i></button>
+                    <div class="popular-item">
+                        <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Popularny artykuł">
+                        <div class="popular-item-content">
+                            <div class="popular-item-title">Najlepsze gry miesiąca</div>
+                            <div class="popular-item-date">5 maja 2025</div>
                         </div>
                     </div>
-                </div>
-
-                <div class="newsletter-item" data-category="promotion">
-                    <div class="newsletter-label sale">Promocja</div>
-                    <div class="newsletter-header">
-                        <i class="fas fa-tags newsletter-icon"></i>
-                        <span class="newsletter-date">20.03.2025</span>
-                    </div>
-                    <h3 class="newsletter-title">Wiosenna promocja -50%</h3>
-                    <p class="newsletter-excerpt">Skorzystaj z naszej wiosennej promocji i otrzymaj 50% zniżki na subskrypcję premium przez pierwszy miesiąc...</p>
-                    <div class="newsletter-footer">
-                        <button class="read-more-btn">Czytaj więcej</button>
-                        <div class="newsletter-actions">
-                            <button class="star-btn"><i class="far fa-star"></i></button>
-                            <button class="save-btn"><i class="far fa-bookmark"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="newsletter-item" data-category="social">
-                    <div class="newsletter-header">
-                        <i class="fas fa-users newsletter-icon"></i>
-                        <span class="newsletter-date">18.03.2025</span>
-                    </div>
-                    <h3 class="newsletter-title">Trendy tygodnia w społeczności</h3>
-                    <p class="newsletter-excerpt">Sprawdź, co było najbardziej popularne w naszej społeczności w ostatnim tygodniu. Odkryj nowe trendy...</p>
-                    <div class="newsletter-footer">
-                        <button class="read-more-btn">Czytaj więcej</button>
-                        <div class="newsletter-actions">
-                            <button class="star-btn"><i class="far fa-star"></i></button>
-                            <button class="save-btn"><i class="far fa-bookmark"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="newsletter-item" data-category="announcements">
-                    <div class="newsletter-header">
-                        <i class="fas fa-bullhorn newsletter-icon"></i>
-                        <span class="newsletter-date">15.03.2025</span>
-                    </div>
-                    <h3 class="newsletter-title">Nowe partnerstwo z Przykładową Firmą</h3>
-                    <p class="newsletter-excerpt">Z przyjemnością informujemy o rozpoczęciu współpracy z Przykładową Firmą, dzięki czemu będziemy mogli zaoferować...</p>
-                    <div class="newsletter-footer">
-                        <button class="read-more-btn">Czytaj więcej</button>
-                        <div class="newsletter-actions">
-                            <button class="star-btn"><i class="far fa-star"></i></button>
-                            <button class="save-btn"><i class="far fa-bookmark"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="newsletter-item" data-category="promotion">
-                    <div class="newsletter-label exclusive">Ekskluzywne</div>
-                    <div class="newsletter-header">
-                        <i class="fas fa-tags newsletter-icon"></i>
-                        <span class="newsletter-date">12.03.2025</span>
-                    </div>
-                    <h3 class="newsletter-title">Oferta tylko dla stałych użytkowników</h3>
-                    <p class="newsletter-excerpt">Przygotowaliśmy specjalną ofertę dla naszych stałych użytkowników. Sprawdź, jakie korzyści możesz uzyskać...</p>
-                    <div class="newsletter-footer">
-                        <button class="read-more-btn">Czytaj więcej</button>
-                        <div class="newsletter-actions">
-                            <button class="star-btn"><i class="far fa-star"></i></button>
-                            <button class="save-btn"><i class="far fa-bookmark"></i></button>
+                    <div class="popular-item">
+                        <img src="https://images.unsplash.com/photo-1545235617-9465d2a55698?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Popularny artykuł">
+                        <div class="popular-item-content">
+                            <div class="popular-item-title">Poradnik dla nowych użytkowników</div>
+                            <div class="popular-item-date">28 kwietnia 2025</div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div class="pagination">
-                <button class="pagination-prev" disabled><i class="fas fa-chevron-left"></i></button>
-                <span class="pagination-info">Strona 1 z 3</span>
-                <button class="pagination-next"><i class="fas fa-chevron-right"></i></button>
-            </div>
-        </section>
-
-        <div class="newsletter-modal" id="newsletter-detail-modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="modal-title">
-                        <i class="fas fa-bullhorn newsletter-icon"></i>
-                        <h3>Aktualizacja regulaminu platformy</h3>
-                    </div>
-                    <button class="modal-close"><i class="fas fa-times"></i></button>
-                </div>
-                <div class="modal-body">
-                    <div class="newsletter-info">
-                        <span class="newsletter-author">Zespół Administracji</span>
-                        <span class="newsletter-date">23.03.2025</span>
-                    </div>
-                    <div class="newsletter-content">
-                        <p>Szanowni Użytkownicy,</p>
-                        <p>Informujemy o wprowadzeniu zmian w regulaminie korzystania z naszej platformy, które wejdą w życie od 1 kwietnia 2025 roku.</p>
-                        <p>Najważniejsze zmiany obejmują:</p>
-                        <ul>
-                            <li>Aktualizację polityki prywatności zgodnie z najnowszymi przepisami</li>
-                            <li>Nowe zasady dotyczące treści publikowanych przez użytkowników</li>
-                            <li>Zmiany w warunkach korzystania z funkcji premium</li>
-                        </ul>
-                        <p>Zachęcamy do zapoznania się z pełną treścią zaktualizowanego regulaminu, dostępnego pod adresem: <a href="#">link do regulaminu</a>.</p>
-                        <p>Jeśli masz jakiekolwiek pytania dotyczące wprowadzonych zmian, skontaktuj się z naszym działem obsługi klienta.</p>
-                        <p>Z poważaniem,<br>Zespół Administracji</p>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="modal-action-btn primary-btn">Zaakceptuj zmiany</button>
-                    <button class="modal-action-btn secondary-btn">Zapisz do przeczytania później</button>
+        </aside>
+        
+        <!-- Główna zawartość z listą artykułów -->
+        <main class="news-main">
+            <div class="page-header">
+                <h1 class="page-title">Najnowsze artykuły</h1>
+                <div class="search-container">
+                    <input type="text" placeholder="Szukaj artykułów...">
+                    <button><i class="fas fa-search"></i></button>
                 </div>
             </div>
-        </div>
-
-        <div class="newsletter-modal" id="subscribe-modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="modal-title">
-                        <i class="fas fa-plus-circle"></i>
-                        <h3>Subskrybuj nowy newsletter</h3>
-                    </div>
-                    <button class="modal-close"><i class="fas fa-times"></i></button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="newsletter-category">Kategoria:</label>
-                        <select id="newsletter-category">
-                            <option value="announcements">Ogłoszenia</option>
-                            <option value="promotion">Promocje</option>
-                            <option value="updates">Aktualizacje</option>
-                            <option value="social">Społeczność</option>
-                            <option value="technology">Technologia</option>
-                            <option value="science">Nauka</option>
-                            <option value="culture">Kultura</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="newsletter-frequency">Częstotliwość:</label>
-                        <select id="newsletter-frequency">
-                            <option value="daily">Codziennie</option>
-                            <option value="weekly" selected>Co tydzień</option>
-                            <option value="monthly">Co miesiąc</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="notification-preferences">Powiadomienia:</label>
-                        <div class="checkbox-group">
-                            <label>
-                                <input type="checkbox" checked> Powiadomienia e-mail
-                            </label>
-                            <label>
-                                <input type="checkbox" checked> Powiadomienia w aplikacji
-                            </label>
-                            <label>
-                                <input type="checkbox"> Powiadomienia push
-                            </label>
+            
+            <div class="articles-grid">
+                <?php if (mysqli_num_rows($articles_result) > 0): ?>
+                    <?php while($article = mysqli_fetch_assoc($articles_result)): ?>
+                        <div class="article-card">
+                            <div class="article-image">
+                                <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="<?= htmlspecialchars($article['title']) ?>">
+                            </div>
+                            <div class="article-content">
+                                <span class="article-category"><?= htmlspecialchars($article['type']) ?></span>
+                                <h3 class="article-title"><?= htmlspecialchars($article['title']) ?></h3>
+                                <p class="article-excerpt"><?= htmlspecialchars(substr($article['content'], 0, 120)) ?>...</p>
+                                <div class="article-meta">
+                                    <div class="article-author">
+                                        <div class="author-avatar"><?= substr($article['author_name'], 0, 1) ?></div>
+                                        <?= htmlspecialchars($article['author_name']) ?>
+                                    </div>
+                                    <div class="article-date">
+                                        <i class="far fa-calendar"></i>
+                                        <?= date('d.m.Y', strtotime($article['creation_date'])) ?>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                    <?php endwhile; ?>
+                <?php else: ?>
+                    <div class="no-articles">
+                        <i class="far fa-newspaper"></i>
+                        <h3>Brak artykułów do wyświetlenia</h3>
+                        <p>Sprawdź później, aby zobaczyć nowe artykuły.</p>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="modal-action-btn primary-btn">Subskrybuj</button>
-                    <button class="modal-action-btn secondary-btn modal-close-btn">Anuluj</button>
-                </div>
+                <?php endif; ?>
             </div>
-        </div>
-    </main>
-
-    <aside class="right-sidebar">
-        <div class="sidebar-header">
-            <h3>Popularne wiadomości</h3>
-        </div>
-        <div class="sidebar-content">
-            <div class="trending-posts">
-                <div class="trending-post">
-                    <h4>Aktualizacja aplikacji mobilnej</h4>
-                    <p>45 komentarzy</p>
-                </div>
-
-                <div class="trending-post">
-                    <h4>Nowe funkcje w galerii</h4>
-                    <p>32 komentarze</p>
-                </div>
-
-                <div class="trending-post">
-                    <h4>Konkurs dla społeczności</h4>
-                    <p>27 komentarzy</p>
-                </div>
-            </div>
-
-            <div class="sidebar-section">
-                <h4>Statystyki subskrypcji</h4>
-                <div class="subscription-stats">
-                    <div class="stat-item">
-                        <span class="stat-label">Subskrypcje:</span>
-                        <span class="stat-value">8</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Nieprzeczytane:</span>
-                        <span class="stat-value">2</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Ostatnia aktualizacja:</span>
-                        <span class="stat-value">Dzisiaj, 08:45</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </aside>
-
-    <!-- #endregion -->
+        </main>
