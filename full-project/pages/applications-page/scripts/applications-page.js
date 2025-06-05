@@ -10,20 +10,14 @@ function navigateToFeature(appName) {
         case 'kalkulator':
             url += '../calculator-page/index.php';
             break;
-        case 'notatnik':
-            url += '../notepad-page/index.php';
-            break;
-        case 'lista zadań':
-            url += '../todo-list-page/index.php';
-            break;
         case 'kalendarz':
-            url += '../calendar-page/index.php';
+            url += 'https://calendar.google.com';
             break;
         case 'zegar':
-            url += '../clock-page/index.php';
+            url += 'https://zegaronline.pl/czas/';
             break;
         case 'pogoda':
-            url += '../weather-page/index.php';
+            url += 'https://pogoda.interia.pl';
             break;
         default:
             url = '#';

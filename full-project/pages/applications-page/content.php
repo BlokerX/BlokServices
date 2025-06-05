@@ -21,26 +21,6 @@
             </div>
 
             <div class="app-card">
-                <i class="fas fa-notes-medical"></i>
-                <h3>Notatnik</h3>
-                <p>Twórz i zapisuj notatki</p>
-                <div class="app-actions">
-                    <button class="add-to-desktop"><i class="fas fa-plus"></i> Dodaj do pulpitu</button>
-                    <button class="launch-app"><i class="fas fa-play"></i> Uruchom</button>
-                </div>
-            </div>
-
-            <div class="app-card">
-                <i class="fas fa-tasks"></i>
-                <h3>Lista zadań</h3>
-                <p>Organizuj swoje zadania</p>
-                <div class="app-actions">
-                    <button class="add-to-desktop"><i class="fas fa-plus"></i> Dodaj do pulpitu</button>
-                    <button class="launch-app"><i class="fas fa-play"></i> Uruchom</button>
-                </div>
-            </div>
-
-            <div class="app-card">
                 <i class="fas fa-calendar-alt"></i>
                 <h3>Kalendarz</h3>
                 <p>Przeglądaj i zarządzaj swoimi wydarzeniami</p>
