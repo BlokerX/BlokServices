@@ -138,9 +138,12 @@ if (mysqli_num_rows($result) > 0) {
     exit;
 }
 
+
+$password_hashed = hash('sha256', $password);
+
 // Użytkownik nie istnieje, dodaj go do bazy danych
 $query = "INSERT INTO users (login, email, phone_number, password, avatar, name, last_name, gender, birth_date, description, register_date, is_admin)
-          VALUES ('$login', '$email', '$phone_number', '$password', '$avatar', '$name', '$last_name', '$gender', '$birth_date', '$description', current_timestamp(), 0)";
+          VALUES ('$login', '$email', '$phone_number', '$password_hashed', '$avatar', '$name', '$last_name', '$gender', '$birth_date', '$description', current_timestamp(), 0)";
 
 if (mysqli_query($conn, $query)) {
     mysqli_close($conn);

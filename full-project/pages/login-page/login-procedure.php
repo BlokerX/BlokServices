@@ -40,7 +40,9 @@ else {
 }
 
 $login = htmlspecialchars($login, ENT_QUOTES, 'UTF-8');
+// Szyfruj hasło przed sprawdzeniem w bazie danych
 $password = htmlspecialchars($password, ENT_QUOTES, 'UTF-8');
+$password_hashed = hash('sha256', $password);
 $remember = htmlspecialchars($remember, ENT_QUOTES, 'UTF-8');
 
 // Sprawdź czy login i hasło są poprawne z bazy danych:
@@ -52,7 +54,7 @@ if (!$conn) {
 }
 
 // Użyj przygotowanych zapytań, aby uniknąć SQL Injection
-$query = "SELECT * FROM users WHERE login = '$login' AND password = '$password'";
+$query = "SELECT * FROM users WHERE login = '$login' AND password = '$password_hashed'";
 
 $result = mysqli_query($conn, $query);
 

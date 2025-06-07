@@ -49,19 +49,6 @@ if (!isset($_SESSION['user_id'])) {
                     </div>
                 </div>
 
-                <!-- <div class="form-group">
-            <label for="old_password">Stare hasło:</label>
-            <input type="password" id="old_password" name="old_password" required>
-        </div>
-        <div class="form-group">
-            <label for="new_password">Nowe hasło:</label>
-            <input type="password" id="new_password" name="new_password">
-        </div>
-        <div class="form-group">
-            <label for="new_password_repeated">Hasło:</label>
-            <input type="password" id="new_password_repeated" name="new_password_repeated">
-        </div> -->
-
                 <div class="form-group">
                     <label for="email">Email</label>
                     <div class="input-with-icon">
@@ -132,6 +119,33 @@ if (!isset($_SESSION['user_id'])) {
                 <button class="auth-button back-button" href="<?php echo $config['pages']['profile-page']['path'] . "?user_name=" . $_SESSION['user_name']; ?>">Anuluj (Wróć do strony profilu)</button>
 
             </form>
+
+            <form action="<?php echo $config['pages']['modify-account-page']['modify-password-procedure-path']; ?>" method="POST" class="auth-form password-form">
+                <h2>Zmień hasło</h2>
+                <div class="form-group">
+                    <label for="old_password">Stare hasło</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="old_password" name="old_password" placeholder="Wprowadź stare hasło" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="new_password">Nowe hasło</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-key"></i>
+                        <input type="password" id="new_password" name="new_password" placeholder="Wprowadź nowe hasło" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="new_password_repeated">Powtórz nowe hasło</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-key"></i>
+                        <input type="password" id="new_password_repeated" name="new_password_repeated" placeholder="Powtórz nowe hasło" required>
+                    </div>
+                </div>
+                <button type="submit" class="auth-button">Zmień hasło</button>
+            </form>
+
         </div>
     </div>
 </main>
