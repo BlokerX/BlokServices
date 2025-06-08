@@ -293,3 +293,305 @@
     background: #0056b3;
 }
 */
+
+/* Stylowanie listy znajomych */
+.friends-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.friend-item {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 15px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.friend-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-color: #007bff;
+}
+
+.friend-avatar-container {
+    position: relative;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.friend-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e0e0e0;
+}
+
+.online-indicator {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 12px;
+    height: 12px;
+    background-color: #28a745;
+    border: 2px solid white;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.friend-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.friend-name {
+    margin-bottom: 5px;
+}
+
+.friend-link {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: 600;
+    transition: color 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.friend-link:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+.admin-badge {
+    color: #ffc107;
+    font-size: 0.8em;
+}
+
+.friend-real-name {
+    color: #666;
+    font-size: 0.9em;
+    margin-bottom: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.friend-last-seen {
+    color: #888;
+    font-size: 0.8em;
+}
+
+.online-status {
+    color: #28a745;
+    font-weight: 600;
+}
+
+.friend-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-left: 10px;
+}
+
+.view-profile-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 50%;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 0.9em;
+}
+
+.view-profile-btn:hover {
+    background-color: #0056b3;
+    transform: scale(1.1);
+    color: white;
+    text-decoration: none;
+}
+
+/* Wiadomość gdy brak znajomych */
+.no-friends-message {
+    text-align: center;
+    padding: 40px 20px;
+    color: #666;
+    background: #f8f9fa;
+    border-radius: 10px;
+    margin-top: 15px;
+}
+
+.no-friends-message i {
+    font-size: 3em;
+    color: #ccc;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.no-friends-message p {
+    margin: 10px 0;
+    line-height: 1.5;
+}
+
+.no-friends-message p:first-of-type {
+    font-weight: 600;
+    color: #555;
+}
+
+/* Responsywność */
+@media (max-width: 768px) {
+    .friends-list {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .friend-item {
+        padding: 12px;
+    }
+    
+    .friend-avatar {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .friend-avatar-container {
+        margin-right: 12px;
+    }
+    
+    .friend-real-name,
+    .friend-last-seen {
+        font-size: 0.85em;
+    }
+    
+    .view-profile-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 0.8em;
+    }
+}
+
+@media (max-width: 480px) {
+    .friend-item {
+        flex-direction: column;
+        text-align: center;
+        padding: 15px;
+    }
+    
+    .friend-avatar-container {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    
+    .friend-actions {
+        margin-left: 0;
+        margin-top: 10px;
+        flex-direction: row;
+        justify-content: center;
+    }
+}
+
+/* Style dla przycisków zaproszeń */
+.invitation-action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    border: none;
+    border-radius: 50%;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 0.9em;
+    cursor: pointer;
+    margin-bottom: 3px;
+}
+
+.accept-invitation-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+.accept-invitation-btn:hover {
+    background-color: #218838;
+    transform: scale(1.1);
+}
+
+.reject-invitation-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.reject-invitation-btn:hover {
+    background-color: #c82333;
+    transform: scale(1.1);
+}
+
+.cancel-invitation-btn {
+    background-color: #6c757d;
+    color: white;
+}
+
+.cancel-invitation-btn:hover {
+    background-color: #5a6268;
+    transform: scale(1.1);
+}
+
+/* Dodatkowe style dla statusu oczekujących zaproszeń */
+.friend-last-seen i.fas.fa-clock {
+    color: #ffc107;
+    margin-right: 5px;
+}
+
+/* Style dla trybu ciemnego */
+[data-theme="dark"] .friend-item {
+    background: var(--dark-bg);
+    border-color: var(--dark-border);
+    color: var(--dark-text);
+}
+
+[data-theme="dark"] .friend-item:hover {
+    border-color: var(--dark-primary);
+}
+
+[data-theme="dark"] .friend-avatar {
+    border-color: var(--dark-border);
+}
+
+[data-theme="dark"] .friend-link {
+    color: var(--dark-primary);
+}
+
+[data-theme="dark"] .friend-link:hover {
+    color: var(--dark-primary);
+}
+
+[data-theme="dark"] .friend-real-name {
+    color: var(--dark-neutral);
+}
+
+[data-theme="dark"] .friend-last-seen {
+    color: var(--dark-neutral);
+}
+
+[data-theme="dark"] .no-friends-message {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--dark-neutral);
+}
+
+[data-theme="dark"] .no-friends-message i {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .no-friends-message p:first-of-type {
+    color: var(--dark-text);
+}
